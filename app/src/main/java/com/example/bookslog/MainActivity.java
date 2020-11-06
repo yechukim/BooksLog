@@ -3,6 +3,7 @@ package com.example.bookslog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
@@ -32,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
          tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
          //뷰페이지 바꿀 때
          viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
-
     }
+
 }

@@ -5,36 +5,156 @@
     android:layout_height="match_parent"
     tools:context=".Frag_log">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--버튼 뺀 나머지 레이아웃-->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="제목"
-            android:textSize="20sp" />
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <!--제목, 저자, 사진 레이아웃-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edt_title"
-            android:layout_width="177dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginLeft="45dp"
-            android:background="@drawable/edtstyle"/>
+                <LinearLayout
 
-        <TextView
-            android:id="@+id/author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="제목"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:paddingLeft="15dp"
+                            android:id="@+id/edt_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/edtstyle"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="저자"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:paddingLeft="15dp"
+                            android:id="@+id/edt_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/edtstyle"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/book_cover"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:src="@drawable/gallery" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="기억하고 싶은 내용"
+                android:textSize="17sp" />
+
+            <EditText
+                android:padding="10dp"
+                android:gravity="left"
+                android:id="@+id/edt_remember"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edtstyle"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="textMultiLine"
+                android:text="생각 끄적이기"
+                android:textSize="17sp" />
+
+            <EditText
+                android:padding="10dp"
+                android:gravity="left"
+                android:id="@+id/edt_thoughts"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="20dp"
+                android:scrollbars="vertical"
+                android:background="@drawable/edtstyle"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="평점"
+                android:textSize="17sp" />
+
+            <RatingBar
+                android:id="@+id/ratings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/RatingBar"/>
+
+            <TextView
+                android:id="@+id/log_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="작성일 : 2020/10/10"
+                android:textSize="17sp" />
+            <!--작성일 : 다음에 오늘 날짜 뜸-->
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/log_save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_marginTop="10dp"
-            android:text="저자"
-            android:textSize="20sp" />
-
-
-    </RelativeLayout>
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btnstyle"
+            android:text="저장"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.bookslog;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,14 +19,16 @@ public class Frag_cal extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
        View fragView = inflater.inflate(R.layout.fragment_frag_cal, container, false);
         return fragView;
     }
+
+
 }

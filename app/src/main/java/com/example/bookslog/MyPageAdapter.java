@@ -8,11 +8,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class MyPageAdapter extends FragmentPagerAdapter {
     int numOfTabs;
 
-    public MyPageAdapter(@NonNull FragmentManager fm, int behavior) {
+    public MyPageAdapter(@NonNull FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs = numOfTabs;
     }
-
     @NonNull
     @Override
     public Fragment getItem(int position) {
