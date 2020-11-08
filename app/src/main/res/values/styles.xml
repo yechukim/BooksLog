@@ -2,13 +2,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#5C5B5B</item>
+        <item name="colorPrimary">#C1C0C0</item>
+        <item name="colorPrimaryDark">@android:color/tab_indicator_text</item>
+        <item name="colorAccent">@android:color/holo_orange_dark</item>
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">#A5A5A5</item>
         <item name="colorControlActivated">#FDCC38</item>
     </style>
-
 </resources>

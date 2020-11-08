@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="false"
+    android:fadeScrollbars="true"
     tools:context=".Frag_cal">
 
     <!-- TODO: Update blank fragment layout -->
@@ -48,14 +51,15 @@
                 android:layout_marginLeft="30dp"
                 android:text="기록한 책 :"
                 android:textSize="20sp" />
-
+            <!--책이 없으면 읽은 책이 없네요 뜸 -->
             <TextView
                 android:id="@+id/bookName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:hint="선택한 날짜에 기록한 책"
+                android:hint="기록한 책"
                 android:textSize="20sp" />
+
         </LinearLayout>
 
     </LinearLayout>

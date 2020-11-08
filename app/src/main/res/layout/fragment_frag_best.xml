@@ -4,11 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Frag_best">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <!--책 뜸 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+
+        </LinearLayout>
+        <!--사이트 이동 버튼-->
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:text="사이트로 이동"
+            android:background="@drawable/btng"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"/>
+    </LinearLayout>
 
 </FrameLayout>

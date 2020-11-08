@@ -134,7 +134,7 @@
                 android:id="@+id/ratings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/RatingBar"/>
+                android:theme="@style/RatingBar" />
 
             <TextView
                 android:id="@+id/log_date"
@@ -148,11 +148,11 @@
 
         <Button
             android:id="@+id/log_save"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/btnstyle"
+            android:background="@drawable/btng"
             android:text="저장"
             android:textSize="18sp" />
     </LinearLayout>

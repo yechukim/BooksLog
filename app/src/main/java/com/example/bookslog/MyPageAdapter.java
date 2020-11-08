@@ -5,12 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+
 public class MyPageAdapter extends FragmentPagerAdapter {
     int numOfTabs;
 
+    @Override
+    public int getCount() {
+        return numOfTabs;
+    }
+
     public MyPageAdapter(@NonNull FragmentManager fm, int numOfTabs) {
-        super(fm);
-        this.numOfTabs = numOfTabs;
+        super(fm,numOfTabs); //이렇게 해도 똑같은지 보기
     }
     @NonNull
     @Override
@@ -26,7 +32,7 @@ public class MyPageAdapter extends FragmentPagerAdapter {
                 Frag_log frag_log = new Frag_log();
                 return frag_log;
             case 3:
-                Frag_statistic frag_statistic  = new Frag_statistic();
+                Frag_statistic frag_statistic = new Frag_statistic();
                 return frag_statistic;
             case 4:
                 Frag_best frag_best = new Frag_best();
@@ -34,10 +40,5 @@ public class MyPageAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
-    }
-
-    @Override
-    public int getCount() {
-        return numOfTabs;
     }
 }
