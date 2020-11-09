@@ -16,7 +16,8 @@ public class MyPageAdapter extends FragmentPagerAdapter {
     }
 
     public MyPageAdapter(@NonNull FragmentManager fm, int numOfTabs) {
-        super(fm,numOfTabs); //이렇게 해도 똑같은지 보기
+        super(fm);
+        this.numOfTabs = numOfTabs;
     }
     @NonNull
     @Override
