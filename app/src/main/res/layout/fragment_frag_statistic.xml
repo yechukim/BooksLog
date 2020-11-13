@@ -24,7 +24,8 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/btn"
                 android:text="이번 주"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+/>
 
             <Button
                 android:id="@+id/btn_month"
