@@ -39,9 +39,11 @@ public class Frag_cal extends Fragment {
                 selectedDate.setText(year + "/" + month + "/" + dayOfMonth);
             }
         });
+
         //해당 날짜에 책이 있으면 가져옴
         return fragView;
     }
+
 
 
 }

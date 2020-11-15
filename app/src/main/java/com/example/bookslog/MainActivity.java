@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(5);
         //액션바
         actionBar = getSupportActionBar();
-        actionBar.setTitle(Html.fromHtml("<font color=\"#494949\">" + barTitle[0] + "</font>"));
+        actionBar.setTitle(Html.fromHtml("<font color=\"#494949\">" + barTitle[0] + "</font>"));//액션바 텍스트 색상
 
       //  actionBar.setSubtitle("책꽂이에서 기록 검색");
 
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
 }
