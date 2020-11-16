@@ -34,7 +34,7 @@ public class Frag_shelf extends Fragment {
         View fragView = inflater.inflate(R.layout.fragment_frag_shelf, container, false);
         recyclerView = fragView.findViewById(R.id.recyclerView);
 
-/*        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+/*       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

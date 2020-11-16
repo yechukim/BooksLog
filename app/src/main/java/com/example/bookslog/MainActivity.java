@@ -72,17 +72,10 @@ public class MainActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle(Html.fromHtml("<font color=\"#494949\">" + barTitle[0] + "</font>"));//액션바 텍스트 색상
 
-      //  actionBar.setSubtitle("책꽂이에서 기록 검색");
-
-
-        //어댑터 설정
+        //어댑터
         adapter = new MyPageAdapter(getSupportFragmentManager(), 5);//프래그먼트 매니저 참
-        //어댑터 객체 장착
         viewPager.setAdapter(adapter);
-
-        //탭메뉴를 누를 때
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
-        //뷰페이지 바꿀 때
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
