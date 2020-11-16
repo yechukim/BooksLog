@@ -2,13 +2,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#f2c43d</item>
-        <item name="colorPrimaryDark">#f26d50</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#A5A5A5</item>
         <item name="colorAccent">#efb680</item>
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">#A5A5A5</item>
         <item name="colorControlActivated">#FDCC38</item>
     </style>
+<!--
+    <style name="splashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground"></item>
+    </style>
+-->
 
 </resources>

@@ -55,6 +55,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+                TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView, new AutoTransition());
                 if (holder.expandable.getVisibility() == View.GONE) {
                     holder.showMore.setText("닫기");
                     holder.expandable.setVisibility(v.VISIBLE);

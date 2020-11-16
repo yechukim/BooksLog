@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabs;
     ViewPager viewPager;
     MyPageAdapter adapter;
+    int[] tabUnselectedImg ={R.drawable.shelf, R.drawable.cal, R.drawable.write, R.drawable.statistics, R.drawable.best};
+    int[] tabSelectedImg = {R.drawable.bk_selected, R.drawable.cal_selected, R.drawable.write_selected, R.drawable.statistics_selected, R.drawable.best_selected};
     String[] barTitle = {"책꽂이", "북스로그 달력", "기록하기", "북스로그 통계", "베스트 셀러"};
     int position; //탭 포지션 가져오게 만들기
     ActionBar actionBar;
@@ -59,11 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
         tabs = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.viewPager);
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.bk2));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.cal3));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.write3));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.statistics));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.best2));
+        tabs.addTab(tabs.newTab().setIcon(tabSelectedImg[0]));
+        for(int i=1; i<tabSelectedImg.length; i++){
+            tabs.addTab(tabs.newTab().setIcon(tabUnselectedImg[i]));
+        }
         tabs.setTabGravity(tabs.GRAVITY_FILL);
         //프래그먼트 미리 담아놓기
         viewPager.setOffscreenPageLimit(5);
@@ -85,20 +86,21 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 position = tab.getPosition();
                 actionBar.setTitle(Html.fromHtml("<font color=\"#494949\">" + barTitle[position] + "</font>"));
+                tab.setIcon(tabSelectedImg[position]);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                tab.setIcon(tabUnselectedImg[position]);
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
