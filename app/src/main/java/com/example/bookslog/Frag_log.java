@@ -30,7 +30,7 @@ public class Frag_log extends Fragment {
     Button log_save;
     TextView log_date;
     int tYear, tMonth, tDay;
-    String[] options = {"갤러리에서 사진 가져오기","사진찍기", "취소"};
+    String[] options = {"갤러리에서 사진 가져오기","사진찍기", "닫기"};
     final static int GO_GALLERY =1, TAKE_PIC =2, CANCEL=3;
 
     @Override
