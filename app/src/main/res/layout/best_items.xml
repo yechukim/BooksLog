@@ -18,12 +18,12 @@
         android:id="@+id/bestItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="책 이름" />
+        android:text="책이름" />
 
     <TextView
         android:id="@+id/bestItemAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        tools:text="작가 이름" />
+        android:text="저자 " />
 </LinearLayout>

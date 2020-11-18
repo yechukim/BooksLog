@@ -50,12 +50,12 @@ public class Frag_best extends Fragment {
     class GridAdapter extends BaseAdapter{
         Context context;
         LayoutInflater layoutInflater;
-        List<BestSellerItems> bestSellerLists = new ArrayList<>();
+        List<BestSellerItems> bestSellerLists;
 
-        public GridAdapter(Context c, List<BestSellerItems> bestSellerItems) {
+        public GridAdapter(Context c, List<BestSellerItems> bestSellerLists) {
             this.context = c;
             this.layoutInflater = LayoutInflater.from(context);
-            this.bestSellerLists = bestSellerItems;
+            this.bestSellerLists = bestSellerLists;
         }
 
         @Override
