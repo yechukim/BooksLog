@@ -16,9 +16,12 @@
             android:layout_weight="1">
 
             <GridView
+                android:id="@+id/gridView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:numColumns="3" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:numColumns="3"
+                tools:listitem="@layout/best_items" />
 
         </LinearLayout>
         <!--사이트 이동 버튼-->
