@@ -1,5 +1,6 @@
 package com.example.bookslog;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class Frag_shelf extends Fragment {
+public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener {
+    private static final String TAG = "tag";
     ShelfAdapter shelfAdapter;
     RecyclerView recyclerView;
 
@@ -38,13 +41,18 @@ public class Frag_shelf extends Fragment {
         recyclerView.setLayoutManager(layoutManager);*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        shelfAdapter = new ShelfAdapter(getContext());
+        shelfAdapter = new ShelfAdapter(getContext(),this);
         for (int i = 0; i < 10; i++) {
-            shelfAdapter.addItem(new Shelf_items("title " + i, "author " + i, "details " + i));
+            shelfAdapter.addItem(new Shelf_items("title " + i, "author " + i));
         }
         recyclerView.setAdapter(shelfAdapter);
-
         return fragView;
     }
 
+    @Override
+    public void onShelfClick(int position) {
+        Log.d(TAG, "onShelfClick: clicked"+position);
+        Intent intent = new Intent(getActivity(),ShelfClickActivity.class);
+        startActivity(intent);
+    }
 }

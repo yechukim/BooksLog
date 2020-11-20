@@ -1,9 +1,9 @@
 package com.example.bookslog;
 
 public class BestSellerItems {
-    String title;
-    String author;
-    String category;
+   private String title;
+   private String author;
+   private String category;
 
     public BestSellerItems(String title, String author, String category) {
         this.title = title;
@@ -15,24 +15,11 @@ public class BestSellerItems {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getCategory() {
         return category;
     }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
 }

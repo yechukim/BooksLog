@@ -30,12 +30,9 @@ public class MyPageAdapter extends FragmentPagerAdapter {
                 Frag_cal frag_cal = new Frag_cal();
                 return frag_cal;
             case 2:
-                Frag_log frag_log = new Frag_log();
-                return frag_log;
-            case 3:
                 Frag_statistic frag_statistic = new Frag_statistic();
                 return frag_statistic;
-            case 4:
+            case 3:
                 Frag_best frag_best = new Frag_best();
                 return frag_best;
             default:

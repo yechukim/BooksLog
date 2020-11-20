@@ -5,10 +5,9 @@ public class Shelf_items {
     String author;
     String details;
 
-    public Shelf_items(String bookTitle, String author, String details) {
+    public Shelf_items(String bookTitle, String author) {
         this.bookTitle = bookTitle;
         this.author = author;
-        this.details = details;
     }
 
     public String getBookTitle() {

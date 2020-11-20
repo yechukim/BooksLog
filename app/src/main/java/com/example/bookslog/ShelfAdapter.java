@@ -1,30 +1,26 @@
 package com.example.bookslog;
 
 import android.content.Context;
-import android.os.Build;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> {
+
     Context context;
     ArrayList<Shelf_items> shelfItems = new ArrayList<>();
+    private OnShelfListener onShelfListener;
 
-    public ShelfAdapter(Context context) {
+    public ShelfAdapter(Context context, OnShelfListener onShelfListener) {
         this.context = context;
+        this.onShelfListener = onShelfListener;
     }
 
     @Override
@@ -40,7 +36,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
         //뷰홀더가 재사용될 수 있으면 호출 안됨
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.shelf_items, parent, false);
-        return new ViewHolder(itemView); //뷰를 담고 있는 뷰 홀더 객체를 만들어서 리턴..
+        return new ViewHolder(itemView, onShelfListener); //뷰를 담고 있는 뷰 홀더 객체를 만들어서 리턴..
     }
 
     @Override
@@ -49,22 +45,8 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
         Shelf_items item = shelfItems.get(position);
         holder.bookTitle.setText(item.getBookTitle());
         holder.author.setText(item.getAuthor());
-        holder.bookDetails.setText(item.getDetails());
         holder.itemView.setTag(position);
-        holder.showMore.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView, new AutoTransition());
-                if (holder.expandable.getVisibility() == View.GONE) {
-                    holder.showMore.setText("닫기");
-                    holder.expandable.setVisibility(v.VISIBLE);
-                } else {
-                    holder.showMore.setText("더보기");
-                    holder.expandable.setVisibility(v.GONE);
-                }
-            }
-        });
+
     }
 
     public void addItem(Shelf_items item) {
@@ -75,22 +57,28 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
         return shelfItems.get(position);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView bookTitle, author, bookDetails;
-        LinearLayout expandable;
-        TextView showMore;
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView bookTitle, author;
+        OnShelfListener onShelfListener;
 
-        public ViewHolder(@NonNull View itemView) {//뷰를 파라미터로 받음
+        public ViewHolder(@NonNull View itemView, OnShelfListener onShelfListener) {//뷰를 파라미터로 받음
             // 뷰홀더는 뷰를 담고 있다. 그 뷰가 전달됨! 그 안에 들어있는 차일드 뷰가 요기 들어가 있다..?
             //데이터와 뷰를 매칭해줘야 한다.
             super(itemView);
-            expandable = itemView.findViewById(R.id.expandable_view);
-            showMore = itemView.findViewById(R.id.showMore);
             bookTitle = itemView.findViewById(R.id.bookTitle);
             author = itemView.findViewById(R.id.author);
-            bookDetails = itemView.findViewById(R.id.bookDetails);
-
+            this.onShelfListener = onShelfListener;
+            itemView.setOnClickListener(this);
         }
 
+        //click each card view to edit or delete
+        @Override
+        public void onClick(View v) {
+            onShelfListener.onShelfClick(getAdapterPosition());
+        }
     }
+    public interface OnShelfListener {
+        void onShelfClick(int position);
+    }
+
 }

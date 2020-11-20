@@ -28,12 +28,11 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabs;
     ViewPager viewPager;
     MyPageAdapter adapter;
-    int[] tabUnselectedImg ={R.drawable.shelf, R.drawable.cal, R.drawable.write, R.drawable.statistics, R.drawable.best};
-    int[] tabSelectedImg = {R.drawable.bk_selected, R.drawable.cal_selected, R.drawable.write_selected, R.drawable.statistics_selected, R.drawable.best_selected};
-    String[] barTitle = {"책꽂이", "북스로그 달력", "기록하기", "북스로그 통계", "베스트 셀러"};
+    int[] tabUnselectedImg ={R.drawable.shelf, R.drawable.cal, R.drawable.statistics, R.drawable.best};
+    int[] tabSelectedImg = {R.drawable.bk_selected, R.drawable.cal_selected, R.drawable.statistics_selected, R.drawable.best_selected};
+    String[] barTitle = {"책꽂이", "북스로그 달력", "북스로그 통계", "베스트 셀러"};
     int position; //탭 포지션 가져오게 만들기
     ActionBar actionBar;
-
     //액션바 검색 아이콘
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -46,14 +45,15 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the options menu from XML
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.bar,menu);
+
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
         // 여기에 이벤트 리스너 설정..?
         return super.onCreateOptionsMenu(menu);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
