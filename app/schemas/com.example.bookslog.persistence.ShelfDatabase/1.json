@@ -1,0 +1,76 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "510ccc6b8d1a9a54fd0fec6d2e2eab87",
+    "entities": [
+      {
+        "tableName": "shelf",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `cover` INTEGER NOT NULL, `title` TEXT, `author` TEXT, `writeDate` TEXT, `editDate` TEXT, `write` TEXT, `ratingBar` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bookCover",
+            "columnName": "cover",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bookTitle",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "writeDate",
+            "columnName": "writeDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "editDate",
+            "columnName": "editDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "write",
+            "columnName": "write",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ratingBar",
+            "columnName": "ratingBar",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '510ccc6b8d1a9a54fd0fec6d2e2eab87')"
+    ]
+  }
+}

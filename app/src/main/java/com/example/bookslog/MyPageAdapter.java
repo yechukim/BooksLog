@@ -1,5 +1,7 @@
 package com.example.bookslog;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,17 +26,13 @@ public class MyPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                Frag_shelf frag_shelf = new Frag_shelf();
-                return frag_shelf;
+                return new Frag_shelf();
             case 1:
-                Frag_cal frag_cal = new Frag_cal();
-                return frag_cal;
+                return new Frag_cal();
             case 2:
-                Frag_statistic frag_statistic = new Frag_statistic();
-                return frag_statistic;
+                return new Frag_statistic();
             case 3:
-                Frag_best frag_best = new Frag_best();
-                return frag_best;
+                return new Frag_best();
             default:
                 return null;
         }

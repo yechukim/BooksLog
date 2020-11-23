@@ -17,7 +17,7 @@
         android:id="@+id/tabs"
         android:background="#FFBA55"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         app:tabMode="fixed" />
     <!--tab selected color 바꾸는 거 찾아보기 -->
 </LinearLayout>

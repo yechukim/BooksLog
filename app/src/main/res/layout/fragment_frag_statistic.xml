@@ -19,28 +19,27 @@
 
             <Button
                 android:id="@+id/btn_week"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
-                android:background="@drawable/btn"
+                android:background="@drawable/button"
                 android:text="이번 주"
-                android:textSize="15sp"
-/>
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/btn_month"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
-                android:background="@drawable/btn"
+                android:background="@drawable/button"
                 android:text="한 달"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/btn_year"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:background="@drawable/btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
                 android:text="일 년"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -74,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    tools:text="3"
+                    android:text="0"
                     android:textColor="#000000"
                     android:textSize="40sp" />
 
@@ -87,13 +86,23 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/wholeCounts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="50dp"
+                android:text="총 (몇)권 읽었어요!"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:text="나만의 독서기록, 북스로그 "
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="80dp"

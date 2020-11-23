@@ -3,10 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke
         android:width="2dp"
-        android:color="#B6B6B6"/>
-    <corners
-        android:radius="10dp" />
+        android:color="#FBF8EF"/>
 
-    <solid android:color="#F4F4F4" />
+    <solid android:color="#F1EAAD" />
 
 </shape>

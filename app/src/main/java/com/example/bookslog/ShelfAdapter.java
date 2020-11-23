@@ -15,17 +15,13 @@ import java.util.ArrayList;
 public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Shelf_items> shelfItems = new ArrayList<>();
+    ArrayList<Shelf_items> mShelf = new ArrayList<>();
     private OnShelfListener onShelfListener;
 
-    public ShelfAdapter(Context context, OnShelfListener onShelfListener) {
+    public ShelfAdapter(Context context, OnShelfListener onShelfListener, ArrayList<Shelf_items> mShelf) {
         this.context = context;
         this.onShelfListener = onShelfListener;
-    }
-
-    @Override
-    public int getItemCount() {//몇개냐
-        return shelfItems.size();
+        this.mShelf = mShelf;
     }
 
     @NonNull
@@ -34,31 +30,28 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
         //뷰 홀더가 만들어지는 시점에 자동으로 호출
         //아이템을 위한 뷰 홀더 객체가 만들어질 때 호출된다.
         //뷰홀더가 재사용될 수 있으면 호출 안됨
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.shelf_items, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shelf_items, parent, false);
         return new ViewHolder(itemView, onShelfListener); //뷰를 담고 있는 뷰 홀더 객체를 만들어서 리턴..
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        //뷰홀더라는게 바인될 시점이다.
-        Shelf_items item = shelfItems.get(position);
-        holder.bookTitle.setText(item.getBookTitle());
-        holder.author.setText(item.getAuthor());
-        holder.itemView.setTag(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int i) {
+        //entry만큼 호출됨.
+        holder.bookTitle.setText(mShelf.get(i).getBookTitle());
+        holder.author.setText(mShelf.get(i).getAuthor());
+        holder.writeDate.setText(mShelf.get(i).getWriteDate());
+        holder.itemView.setTag(i);
 
     }
-
-    public void addItem(Shelf_items item) {
-        shelfItems.add(item);
+    @Override
+    public int getItemCount() {//몇개냐
+        return mShelf.size();
     }
 
-    public Shelf_items getItem(int position) {
-        return shelfItems.get(position);
-    }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView bookTitle, author;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView bookTitle, author,writeDate;
+        ImageView bcover;
         OnShelfListener onShelfListener;
 
         public ViewHolder(@NonNull View itemView, OnShelfListener onShelfListener) {//뷰를 파라미터로 받음
@@ -67,16 +60,27 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
             super(itemView);
             bookTitle = itemView.findViewById(R.id.bookTitle);
             author = itemView.findViewById(R.id.author);
+            bcover = itemView.findViewById(R.id.bcover);
+            writeDate = itemView.findViewById(R.id.writeDate);
             this.onShelfListener = onShelfListener;
             itemView.setOnClickListener(this);
         }
 
-        //click each card view to edit or delete
+        //카드뷰를 클릭하여 수정
         @Override
         public void onClick(View v) {
             onShelfListener.onShelfClick(getAdapterPosition());
         }
     }
+
+    public void addItem(Shelf_items item) {
+        mShelf.add(item);
+    }
+
+    public Shelf_items getItem(int position) {
+        return mShelf.get(position);
+    }
+
     public interface OnShelfListener {
         void onShelfClick(int position);
     }

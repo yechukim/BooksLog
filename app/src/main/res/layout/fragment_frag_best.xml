@@ -20,18 +20,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:numColumns="3" />
+                android:numColumns="3"
+                tools:listitem="@layout/best_items"/>
 
         </LinearLayout>
         <!--사이트 이동 버튼-->
         <Button
             android:id="@+id/btn_goSite"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/button"
             android:layout_marginBottom="30dp"
-            android:background="@drawable/btng"
-            android:text="사이트로 이동" />
+            android:padding="15dp"
+            android:text="사이트에서 더보기" />
     </LinearLayout>
 
 </FrameLayout>

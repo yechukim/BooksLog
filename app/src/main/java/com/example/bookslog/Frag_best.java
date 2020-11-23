@@ -1,15 +1,9 @@
 package com.example.bookslog;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +13,18 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.net.URI;
+import androidx.fragment.app.Fragment;
+import androidx.room.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Frag_best extends Fragment {
     Button btn_goSite;
     GridView gridView;
+    BestAdapter adapter;
+    List<Best_items> bList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,41 +34,43 @@ public class Frag_best extends Fragment {
         btn_goSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://mbook.interpark.com/main/");
-                Intent siteIntent = new Intent(Intent.ACTION_VIEW,uri);
+                Uri uri = Uri.parse("https://book.naver.com/bestsell/bestseller_list.nhn");
+                Intent siteIntent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(siteIntent);
             }
         });
-/*
-        List<BestSellerItems> bestSellerLists = new ArrayList<>();
-        bestSellerLists.add(new BestSellerItems("제목","저자","카데고리"));
+
         gridView = fragView.findViewById(R.id.gridView);
-        GridAdapter adapter = new GridAdapter(getContext(),bestSellerLists);
+        bList = new ArrayList<>();
+        //dummy data
+        for (int i = 0; i < 10; i++) {
+            bList.add(new Best_items("title# " +i, "author# "+i, R.drawable.bcover));
+        }
+        adapter = new BestAdapter(getContext(), bList);
         gridView.setAdapter(adapter);
-*/
 
         return fragView;
     }
 
-    class GridAdapter extends BaseAdapter{
+    public class BestAdapter extends BaseAdapter {
         Context context;
+        List<Best_items> bestItemsList;
         LayoutInflater layoutInflater;
-        List<BestSellerItems> bestSellerLists;
 
-        public GridAdapter(Context c, List<BestSellerItems> bestSellerLists) {
-            this.context = c;
+        public BestAdapter(Context context, List<Best_items> bestItemsList) {
+            this.context = context;
+            this.bestItemsList = bestItemsList;
             this.layoutInflater = LayoutInflater.from(context);
-            this.bestSellerLists = bestSellerLists;
         }
 
         @Override
         public int getCount() {
-            return bestSellerLists.size();
+            return bestItemsList.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return bestSellerLists.get(position);
+            return bestItemsList.get(position);
         }
 
         @Override
@@ -79,20 +80,20 @@ public class Frag_best extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if(view==null){
-                view = layoutInflater.inflate(R.layout.best_items,null);
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.best_items, null);
             }
-            ImageView bestItemCover = view.findViewById(R.id.bestItemCover);
-            TextView bestItemAuthor = view.findViewById(R.id.bestItemAuthor);
-            TextView bestItemTitle = view.findViewById(R.id.bestItemTitle);
+            ImageView bCover = convertView.findViewById(R.id.bestItemCover);
+            TextView bTitle = convertView.findViewById(R.id.bestItemTitle);
+            TextView bAuthor = convertView.findViewById(R.id.bestItemAuthor);
 
-            BestSellerItems bestItems = bestSellerLists.get(position);
-            bestItemAuthor.setText(bestItems.getAuthor());
-            bestItemTitle.setText(bestItems.getTitle());
-            bestItemCover.setImageResource(0);
-            return null;
+            Best_items bestItems = bestItemsList.get(position);
+
+            bCover.setImageResource(bestItems.getCover());
+            bTitle.setText(bestItems.getTitle());
+            bAuthor.setText(bestItems.getAuthor());
+
+            return convertView;
         }
     }
-
 }
