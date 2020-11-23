@@ -8,34 +8,18 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "shelf")
 public class Shelf_items implements Parcelable {
-    @PrimaryKey(autoGenerate = true)
     private int id;
-
-    @ColumnInfo(name = "cover")
     private int bookCover;
-
-    @ColumnInfo(name = "title")
     private String bookTitle;
-
-    @ColumnInfo(name = "author")
-    private String author;
-
-    @ColumnInfo(name = "writeDate")
     private String writeDate;
-
-    @ColumnInfo(name = "editDate")
-    private String editDate;
-
-    @ColumnInfo(name = "write")
+    private String author;
     private String write;
+    private String editDate;
+    private float ratingBar;
 
-    @ColumnInfo(name = "ratingBar")
-    private int ratingBar;
 
-
-    public Shelf_items(String bookTitle, String author, String write, int ratingBar, String writeDate) {
+    public Shelf_items(String bookTitle, String author, String write, float ratingBar, String writeDate) {
         //this.bookCover = bookCover;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -79,6 +63,7 @@ public class Shelf_items implements Parcelable {
     public void setId(int id) {
         this.id = id;
     }
+
     public int getBookCover() {
         return bookCover;
     }
@@ -127,7 +112,7 @@ public class Shelf_items implements Parcelable {
         this.write = write;
     }
 
-    public int getRatingBar() {
+    public float getRatingBar() {
         return ratingBar;
     }
 
@@ -149,7 +134,7 @@ public class Shelf_items implements Parcelable {
         dest.writeString(writeDate);
         dest.writeString(editDate);
         dest.writeString(write);
-        dest.writeInt(ratingBar);
+        dest.writeFloat(ratingBar);
     }
 
     @Override

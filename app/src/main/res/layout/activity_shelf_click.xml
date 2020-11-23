@@ -129,6 +129,10 @@
                 android:layout_marginBottom="30dp"
                 android:textSize="17sp"
                 tools:text="작성일" />
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnSave"

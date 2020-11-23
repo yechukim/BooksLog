@@ -1,6 +1,9 @@
 package com.example.bookslog;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,10 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
     Context context;
     ArrayList<Shelf_items> mShelf = new ArrayList<>();
     private OnShelfListener onShelfListener;
+    //db
+    SQLiteDatabase db;
+    MyHelper helper;
+
 
     public ShelfAdapter(Context context, OnShelfListener onShelfListener, ArrayList<Shelf_items> mShelf) {
         this.context = context;
@@ -64,6 +71,34 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
             writeDate = itemView.findViewById(R.id.writeDate);
             this.onShelfListener = onShelfListener;
             itemView.setOnClickListener(this);
+
+            //DB
+            db = helper.getReadableDatabase();
+
+            String[] projection = {
+                    BaseColumns._ID,
+                    BookShelf.BookEntry.COL_NAME_TITLE,
+                    BookShelf.BookEntry.COL_NAME_AUTHOR,
+                    BookShelf.BookEntry.COL_NAME_CONTENT,
+                    BookShelf.BookEntry.COL_NAME_RATING,
+                    BookShelf.BookEntry.COL_NAME_WRITE_DATE
+            };
+
+            String selection = BookShelf.BookEntry.COL_NAME_TITLE + " = ?";
+            String[] selectionArgs = {"My Title"};
+
+            String sortOrder = BookShelf.BookEntry.COL_NAME_WRITE_DATE + "DESC" ;
+
+            Cursor cursor = db.query(
+                    BookShelf.BookEntry.TBL_NAME,
+                    null,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder
+            );
+
         }
 
         //카드뷰를 클릭하여 수정

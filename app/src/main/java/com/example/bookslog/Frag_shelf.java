@@ -1,16 +1,10 @@
 package com.example.bookslog;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
+import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,16 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.bookslog.persistence.ShelfDatabase;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener,
         View.OnClickListener {
-    ShelfDatabase db;
-
     private static final String TAG = "tag";
 
     //UI components
@@ -42,8 +38,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         db = Room.databaseBuilder(getContext(),ShelfDatabase.class,"shelf_db").allowMainThreadQueries().build();
-
     }
 
 
@@ -62,7 +56,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         mShelfAdapter = new ShelfAdapter(getContext(), this, mShelf);
         mRecyclerView.setAdapter(mShelfAdapter);
         setHasOptionsMenu(true);
-
 
         return fragView;
     }
@@ -110,7 +103,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     private void deleteBooks(Shelf_items book) {
         mShelf.remove(book);
         mShelfAdapter.notifyDataSetChanged();
-        db.getShelfDao().delete(book);
         Toast.makeText(getActivity(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
     }
 

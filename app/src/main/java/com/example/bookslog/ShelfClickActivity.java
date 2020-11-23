@@ -1,6 +1,7 @@
 package com.example.bookslog;
 
-import android.content.Intent;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,10 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
-import com.example.bookslog.persistence.ShelfDao;
-import com.example.bookslog.persistence.ShelfDatabase;
 
 import java.util.Calendar;
 
@@ -26,14 +23,14 @@ public class ShelfClickActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
-    ShelfDatabase db;
-    private static final String TAG = "tap";
+
+    private static final String TAG = "db";
     //ui 요소
     private LineEditText write;
     private EditText title, author;
     private RatingBar ratingBar;
     private ImageView bcover;
-    private TextView writeDate;
+    private TextView writeDate, result;
     private Button btnSave;
 
     //변수
@@ -42,6 +39,9 @@ public class ShelfClickActivity extends AppCompatActivity implements
     private GestureDetector mGestureDetector;
     int tYear, tMonth, tDay;
 
+    //db
+    MyHelper myHelper;
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,15 +49,16 @@ public class ShelfClickActivity extends AppCompatActivity implements
         ActionBar ab = getSupportActionBar();
         ab.setTitle("책꽂이로 돌아가기");
         ab.setDisplayHomeAsUpEnabled(true);
-        db= Room.databaseBuilder(getApplicationContext(), ShelfDatabase.class, "shelf_db").allowMainThreadQueries().build();
+        myHelper = new MyHelper(getApplicationContext());
 
-
+        Log.d(TAG, "onCreate: table created");
         write = findViewById(R.id.write);
         title = findViewById(R.id.title);
         author = findViewById(R.id.author);
         bcover = findViewById(R.id.bcover);
         ratingBar = findViewById(R.id.ratingBar);
         writeDate = findViewById(R.id.writeDate);
+        result = findViewById(R.id.result);
 
         Calendar cal = Calendar.getInstance();
         tYear = cal.get(Calendar.YEAR);
@@ -69,37 +70,26 @@ public class ShelfClickActivity extends AppCompatActivity implements
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getIncomingIntent()) {
-                    db.getShelfDao().insertBooks(new Shelf_items(
-                            title.getText().toString(),
-                            author.getText().toString(),
-                            write.getText().toString(),
-                            ratingBar.getNumStars(),
-                            writeDate.getText().toString()
-                    ));
-
-                    mInitialBook.setBookTitle(title.getText().toString());
-                    mInitialBook.setAuthor(author.getText().toString());
-                    mInitialBook.setWriteDate(writeDate.getText().toString());
-                    mInitialBook.setWrite(write.getText().toString());
-                    mInitialBook.setRatingBar(ratingBar.getNumStars());
+                if (title.getText().toString().isEmpty()) {
+                    showToast("책 제목은 필수 입력항목입니다.");
                 } else {
-                    db.getShelfDao().update(new Shelf_items(
-                            title.getText().toString(),
-                            author.getText().toString(),
-                            write.getText().toString(),
-                            ratingBar.getNumStars(),
-                            writeDate.getText().toString()
-                    ));
+                    db = myHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(BookShelf.BookEntry.COL_NAME_TITLE,title.getText().toString());
+                    values.put(BookShelf.BookEntry.COL_NAME_AUTHOR, author.getText().toString());
+                    values.put(BookShelf.BookEntry.COL_NAME_CONTENT, write.getText().toString());
+                    values.put(BookShelf.BookEntry.COL_NAME_RATING, ratingBar.getRating());
+                    values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE,write.getText().toString());
+
+                    long newRowId = db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
+                    result.setText(title.getText().toString());
+                    showToast("책꽂이에  저장되었습니다.");
+                    title.setText("");
+                    author.setText("");
+                    write.setText("");
                 }
-                Intent intent = new Intent(getApplicationContext(),Frag_shelf.class);
-                intent.putExtra("saved_book",mInitialBook);
-                startActivity(intent);
-                Log.d(TAG, "onClick: ");
 
-                //카드뷰 +1, setText
 
-                Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -112,6 +102,10 @@ public class ShelfClickActivity extends AppCompatActivity implements
         }
         setListeners();
 
+    }
+
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     private void setListeners() {
