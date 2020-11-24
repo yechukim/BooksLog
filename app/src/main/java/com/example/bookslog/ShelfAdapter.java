@@ -14,11 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Shelf_items> mShelf = new ArrayList<>();
+    ArrayList<Shelf_items> mShelf;
     private OnShelfListener onShelfListener;
     //db
     SQLiteDatabase db;
@@ -71,33 +72,6 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
             writeDate = itemView.findViewById(R.id.writeDate);
             this.onShelfListener = onShelfListener;
             itemView.setOnClickListener(this);
-
-            //DB
-            db = helper.getReadableDatabase();
-
-            String[] projection = {
-                    BaseColumns._ID,
-                    BookShelf.BookEntry.COL_NAME_TITLE,
-                    BookShelf.BookEntry.COL_NAME_AUTHOR,
-                    BookShelf.BookEntry.COL_NAME_CONTENT,
-                    BookShelf.BookEntry.COL_NAME_RATING,
-                    BookShelf.BookEntry.COL_NAME_WRITE_DATE
-            };
-
-            String selection = BookShelf.BookEntry.COL_NAME_TITLE + " = ?";
-            String[] selectionArgs = {"My Title"};
-
-            String sortOrder = BookShelf.BookEntry.COL_NAME_WRITE_DATE + "DESC" ;
-
-            Cursor cursor = db.query(
-                    BookShelf.BookEntry.TBL_NAME,
-                    null,
-                    selection,
-                    selectionArgs,
-                    null,
-                    null,
-                    sortOrder
-            );
 
         }
 

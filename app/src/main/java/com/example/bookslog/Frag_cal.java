@@ -17,6 +17,8 @@ public class Frag_cal extends Fragment {
     CalendarView calendar;
     int tYear, tMonth, tDay;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class Frag_cal extends Fragment {
         tYear = cal.get(Calendar.YEAR);
         tMonth = cal.get(Calendar.MONTH)+1;
         tDay = cal.get(Calendar.DAY_OF_MONTH);
-        selectedDate.setText( tYear + "/" + tMonth + "/" + tDay);
+        selectedDate.setText(tYear + "/" + tMonth + "/" + tDay);
         //날짜 선택시 날짜가 뜸
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override

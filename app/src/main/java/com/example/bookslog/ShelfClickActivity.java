@@ -42,6 +42,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
     //db
     MyHelper myHelper;
     SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +89,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
                     author.setText("");
                     write.setText("");
                 }
-
 
             }
         });

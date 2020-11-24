@@ -15,7 +15,7 @@ public final class BookShelf{
     }
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + BookEntry.TBL_NAME + " ("+
-                    BookEntry._ID + " INTEGER PRIMARY KEY, "+
+                    BookEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"+
                     BookEntry.COL_NAME_TITLE +" TEXT, " +
                     BookEntry.COL_NAME_AUTHOR + " TEXT, " +
                     BookEntry.COL_NAME_CONTENT + " TEXT, " +

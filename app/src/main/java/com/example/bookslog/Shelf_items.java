@@ -116,7 +116,7 @@ public class Shelf_items implements Parcelable {
         return ratingBar;
     }
 
-    public void setRatingBar(int ratingBar) {
+    public void setRatingBar(float ratingBar) {
         this.ratingBar = ratingBar;
     }
 

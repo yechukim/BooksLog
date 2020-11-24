@@ -47,7 +47,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
             <!--텍스트 뷰 앞에 기간 추가 // 기간+ 텍스트뷰 -->
             <TextView
