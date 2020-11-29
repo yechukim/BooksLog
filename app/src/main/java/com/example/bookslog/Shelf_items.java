@@ -3,11 +3,6 @@ package com.example.bookslog;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 public class Shelf_items implements Parcelable {
     private int id;
     private int bookCover;
@@ -28,7 +23,6 @@ public class Shelf_items implements Parcelable {
         this.writeDate = writeDate;
     }
 
-    @Ignore
     public Shelf_items() {
 
     }

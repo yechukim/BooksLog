@@ -21,15 +21,14 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
     Context context;
     ArrayList<Shelf_items> mShelf;
     private OnShelfListener onShelfListener;
-    //db
-    SQLiteDatabase db;
-    MyHelper helper;
-
 
     public ShelfAdapter(Context context, OnShelfListener onShelfListener, ArrayList<Shelf_items> mShelf) {
         this.context = context;
         this.onShelfListener = onShelfListener;
         this.mShelf = mShelf;
+    }
+    public ShelfAdapter(Context c){
+        context = c;
     }
 
     @NonNull

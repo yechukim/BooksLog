@@ -33,7 +33,7 @@
             android:background="@drawable/button"
             android:layout_marginBottom="30dp"
             android:padding="15dp"
-            android:text="사이트에서 더보기" />
+            android:text="베스트셀러 구경하러 가기" />
     </LinearLayout>
 
 </FrameLayout>

@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity{
     MyPageAdapter adapter;
     int[] tabUnselectedImg ={R.drawable.shelf, R.drawable.cal, R.drawable.statistics, R.drawable.best};
     int[] tabSelectedImg = {R.drawable.bk_selected, R.drawable.cal_selected, R.drawable.statistics_selected, R.drawable.best_selected};
-    String[] barTitle = {"책꽂이", "북스로그 달력", "북스로그 통계", "베스트 셀러"};
+    String[] barTitle = {"책꽂이", "북스로그 달력", "북스로그 통계", "베스트 셀러 & 책 검색"};
     int position;
 
     @Override

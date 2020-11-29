@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ShelfClickActivity extends AppCompatActivity implements
@@ -24,7 +26,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
 
-    private static final String TAG = "db";
+    private static final String TAG = "fab";
     //ui 요소
     private LineEditText write;
     private EditText title, author;
@@ -32,6 +34,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
     private ImageView bcover;
     private TextView writeDate, result;
     private Button btnSave;
+    RecyclerView mRecyclerView;
 
     //변수
     private boolean mIsNewBook;
@@ -43,6 +46,9 @@ public class ShelfClickActivity extends AppCompatActivity implements
     MyHelper myHelper;
     SQLiteDatabase db;
 
+    //vars
+    ShelfAdapter mShelfAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +57,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
         ab.setTitle("책꽂이로 돌아가기");
         ab.setDisplayHomeAsUpEnabled(true);
         myHelper = new MyHelper(getApplicationContext());
-
-        Log.d(TAG, "onCreate: table created");
         write = findViewById(R.id.write);
         title = findViewById(R.id.title);
         author = findViewById(R.id.author);
@@ -74,25 +78,10 @@ public class ShelfClickActivity extends AppCompatActivity implements
                 if (title.getText().toString().isEmpty()) {
                     showToast("책 제목은 필수 입력항목입니다.");
                 } else {
-                    db = myHelper.getWritableDatabase();
-                    ContentValues values = new ContentValues();
-                    values.put(BookShelf.BookEntry.COL_NAME_TITLE,title.getText().toString());
-                    values.put(BookShelf.BookEntry.COL_NAME_AUTHOR, author.getText().toString());
-                    values.put(BookShelf.BookEntry.COL_NAME_CONTENT, write.getText().toString());
-                    values.put(BookShelf.BookEntry.COL_NAME_RATING, ratingBar.getRating());
-                    values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE,write.getText().toString());
-
-                    long newRowId = db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
-                    result.setText(title.getText().toString());
-                    showToast("책꽂이에  저장되었습니다.");
-                    title.setText("");
-                    author.setText("");
-                    write.setText("");
+                    bookInsert();
                 }
-
             }
         });
-
         if (getIncomingIntent()) {
             //새 책
             setNewBookProperties();
@@ -101,7 +90,20 @@ public class ShelfClickActivity extends AppCompatActivity implements
             setBookProperties();
         }
         setListeners();
+    }
+     //db 저장
+     void bookInsert() {
+        db = myHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(BookShelf.BookEntry.COL_NAME_TITLE, title.getText().toString());
+        values.put(BookShelf.BookEntry.COL_NAME_AUTHOR, author.getText().toString());
+        values.put(BookShelf.BookEntry.COL_NAME_CONTENT, write.getText().toString());
+        values.put(BookShelf.BookEntry.COL_NAME_RATING, ratingBar.getRating());
+        values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE, writeDate.getText().toString());
 
+        db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
+        showToast("책꽂이에  저장되었습니다.");
+        finish();
     }
 
     void showToast(String msg) {
@@ -137,6 +139,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
         title.setHint("제목을 입력하세요.");
         author.setHint("저자를 입력하세요.");
         write.setHint("기록하고 싶은 내용을 입력하세요.");
+
     }
 
     @Override
@@ -166,7 +169,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
 
     @Override
     public void onLongPress(MotionEvent e) {
-
     }
 
     @Override
@@ -182,7 +184,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
     //2번 탭하여 수정하기
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        Log.d(TAG, "onDoubleTap: tapped");
         onInteraction();
         return true;
     }
@@ -194,26 +195,18 @@ public class ShelfClickActivity extends AppCompatActivity implements
 
     private boolean onInteraction() {
         write.setFocusableInTouchMode(true);
-        write.setFocusable(true);
-
         author.setFocusableInTouchMode(true);
-        author.setFocusable(true);
-
         title.setFocusableInTouchMode(true);
-        title.setFocusable(true);
         return true;
     }
 
     private void offInteraction() {
-        write.setFocusableInTouchMode(false);
         write.setFocusable(false);
         write.clearFocus();
 
-        author.setFocusableInTouchMode(false);
         author.setFocusable(false);
         author.clearFocus();
 
-        title.setFocusableInTouchMode(false);
         title.setFocusable(false);
         title.clearFocus();
     }
@@ -226,4 +219,5 @@ public class ShelfClickActivity extends AppCompatActivity implements
         super.onBackPressed();
 
     }
+
 }

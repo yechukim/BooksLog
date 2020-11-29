@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.room.Entity;
 
 import java.util.ArrayList;
 import java.util.List;

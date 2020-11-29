@@ -1,8 +1,11 @@
 package com.example.bookslog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -12,33 +15,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener,
         View.OnClickListener {
-    private static final String TAG = "tag";
+    private static final String TAG = "shelf";
 
     //UI components
     RecyclerView mRecyclerView;
     FloatingActionButton fab;
 
     //vars
-    private ArrayList<Shelf_items> mShelf = new ArrayList<>();
+    ArrayList<Shelf_items> mShelf = new ArrayList<>();
     ShelfAdapter mShelfAdapter;
 
     SQLiteDatabase db;
     MyHelper helper;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,37 +67,28 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         //fab
         fab = fragView.findViewById(R.id.fab);
         fab.setOnClickListener(this);
+        fab.setImageResource(R.drawable.write);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(mRecyclerView);
-        mShelfAdapter = new ShelfAdapter(getContext(), this, mShelf);
+        mShelfAdapter = new ShelfAdapter(getContext(), this,mShelf);
         mRecyclerView.setAdapter(mShelfAdapter);
         setHasOptionsMenu(true);
-        //db insert book
-        insertBooks();
-
-
+        addBooks();
         return fragView;
     }
 
-    private void insertBooks() {
+    public void addBooks() {
 
         String[] projection = {
                 BookShelf.BookEntry.COL_NAME_TITLE,
                 BookShelf.BookEntry.COL_NAME_AUTHOR,
                 BookShelf.BookEntry.COL_NAME_CONTENT,
                 BookShelf.BookEntry.COL_NAME_RATING,
-                BookShelf.BookEntry.COL_NAME_WRITE_DATE
-        };
-
-        // Filter results WHERE "title" = 'My Title'
-        String selection = BookShelf.BookEntry.COL_NAME_TITLE + " = ?";
-        String[] selectionArgs = {"My Title"};
-
-        // How you want the results sorted in the resulting Cursor
+                BookShelf.BookEntry.COL_NAME_WRITE_DATE};
         String sortOrder =
-                BookShelf.BookEntry.COL_NAME_WRITE_DATE + " DESC";
+                BookShelf.BookEntry._ID + " DESC";
 
         Cursor cursor = db.query(
                 BookShelf.BookEntry.TBL_NAME,
@@ -94,25 +97,22 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
                 null,
                 null,
                 null,
-                sortOrder
-        );
+                sortOrder);
 
-        Shelf_items items = new Shelf_items();
         //db에서 가져오기
         while (cursor.moveToNext()) {
+            Shelf_items items = new Shelf_items();
             items.setBookTitle(cursor.getString(0));
             items.setAuthor(cursor.getString(1));
             items.setWrite(cursor.getString(2));
             items.setRatingBar(cursor.getFloat(3));
             items.setWriteDate(cursor.getString(4));
             mShelf.add(items);
-            Log.d(TAG, "insertBooks: "+cursor.getString(0));
+            Log.d(TAG, "added books on Shelf_items: "+items);
         }
-
         mShelfAdapter.notifyDataSetChanged();
         cursor.close();
     }
-
 
     // 프래그먼트마다 액션바 다르게 구성..
     @Override
@@ -125,16 +125,19 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.bar, menu);
-    }
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     //카드뷰 클릭
@@ -153,23 +156,39 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         startActivity(intent);
     }
 
+    //카드뷰 삭제, 데이터베이스 삭제
     private void deleteBooks(Shelf_items book) {
         mShelf.remove(book);
+        db = helper.getWritableDatabase();
+        String selection = BookShelf.BookEntry.COL_NAME_TITLE + " LIKE ?";
+        String[] selectionArgs = {book.getBookTitle()};
+        db.delete(BookShelf.BookEntry.TBL_NAME, selection, selectionArgs);
+        Log.d(TAG, "deleteBooks: " + selectionArgs);
+        db.close();
         mShelfAdapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    //스와이프하여 삭제
+
     private ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {//오른쪽으로 스와이프해서 삭제
-        //이건 드래그하고 싶을 때
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
+        //오른쪽으로 스와이프하면 해당 아이템 삭제함
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             deleteBooks(mShelf.get(viewHolder.getAdapterPosition()));
+            Snackbar snackbar = Snackbar.make(getView(), "아이템이 삭제되었습니다.", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            snackbar.setActionTextColor(Color.YELLOW);
+            //스낵바 되돌리기 뜨게..?
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 }
