@@ -1,35 +1,43 @@
 package com.example.bookslog;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class Frag_best extends Fragment {
-    Button btn_goSite;
-    GridView gridView;
-    BestAdapter adapter;
-    List<Best_items> bList;
+    Button btn_goSite, btn_search;
+    EditText keyword;
+    TextView result;
+    String sKeyword, str;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View fragView = inflater.inflate(R.layout.fragment_frag_best, container, false);
+        final View fragView = inflater.inflate(R.layout.fragment_frag_best, container, false);
         btn_goSite = fragView.findViewById(R.id.btn_goSite);
+        //베스트 셀러 사이트로 이동
         btn_goSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,61 +46,106 @@ public class Frag_best extends Fragment {
                 startActivity(siteIntent);
             }
         });
+        // 책 정보 검색하기
+        btn_search = fragView.findViewById(R.id.btn_search);
+        keyword = fragView.findViewById(R.id.keyword);
+        result = fragView.findViewById(R.id.result);
 
-        gridView = fragView.findViewById(R.id.gridView);
-        bList = new ArrayList<>();
-        //dummy data
-        for (int i = 0; i < 10; i++) {
-            bList.add(new Best_items("title# " +i, "author# "+i, R.drawable.bcover));
-        }
-        adapter = new BestAdapter(getContext(), bList);
-        gridView.setAdapter(adapter);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                new Thread() {
+
+                    @Override
+                    public void run() {
+                         sKeyword = keyword.getText().toString();
+                         if(sKeyword.isEmpty()){
+                             Snackbar snackbar = Snackbar.make(getView(),"검색어를 입력하세요", BaseTransientBottomBar.LENGTH_SHORT);
+                             snackbar.show();
+                         }else {
+                             str = getSearch(sKeyword);
+                             getActivity().runOnUiThread(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     result.setText(str);
+                                 }
+                             });
+                         }
+                    }
+                }.start();
+
+            }
+        });
         return fragView;
     }
+        public String getSearch(String keyword) {
+            String clientID = "NI6zpCQXgTOaGarqdtAK";
+            String clientSecret = "lu3MzDnCUs";
+            StringBuffer sb = new StringBuffer();
 
-    public class BestAdapter extends BaseAdapter {
-        Context context;
-        List<Best_items> bestItemsList;
-        LayoutInflater layoutInflater;
+            try {
 
-        public BestAdapter(Context context, List<Best_items> bestItemsList) {
-            this.context = context;
-            this.bestItemsList = bestItemsList;
-            this.layoutInflater = LayoutInflater.from(context);
-        }
+                String text = URLEncoder.encode(keyword, "UTF-8");
+                String apiURL = "https://openapi.naver.com/v1/search/book.xml?query=" + text + "&display=10" + "&start=1";
+                URL url = new URL(apiURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("X-Naver-Client-Id", clientID);
+                conn.setRequestProperty("X-Naver-Client-Secret", clientSecret);
 
-        @Override
-        public int getCount() {
-            return bestItemsList.size();
-        }
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                XmlPullParser xpp = factory.newPullParser();
+                String tag;
+                //inputStream으로부터 xml값 받기
+                xpp.setInput(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
-        @Override
-        public Object getItem(int position) {
-            return bestItemsList.get(position);
-        }
+                xpp.next();
+                int eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    switch (eventType) {
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+                        case XmlPullParser.START_TAG:
+                            tag = xpp.getName(); //태그 이름 얻어오기
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.best_items, null);
+                            if (tag.equals("item")) ; //첫번째 검색 결과
+
+                            else if (tag.equals("title")) {
+                                sb.append("책 제목 : ");
+                                xpp.next();
+                                sb.append(xpp.getText().replaceAll("\\<.*?>",""));
+                                sb.append("\n");
+                                sb.append("\n");
+                            } else if (tag.equals("description")) {
+                                sb.append("책 내용 : ");
+                                xpp.next();
+                                sb.append(xpp.getText());
+                                sb.append("\n");
+                                sb.append("\n");
+                                sb.append("-------------------------------------");
+                                sb.append("\n");
+                            }else if(tag.equals("author")){
+                                sb.append("저자 정보 : ");
+                                xpp.next();
+                                sb.append(xpp.getText());
+                                sb.append("\n");
+                                sb.append("\n");
+                            }else if(tag.equals("price")){
+                                sb.append("가격 : ");
+                                xpp.next();
+                                sb.append(xpp.getText()+"원");
+                                sb.append("\n");
+                                sb.append("\n");
+                            }
+                            break;
+                    }
+                    eventType = xpp.next();
+                }
+
+            } catch (Exception e) {
+                return e.toString();
             }
-            ImageView bCover = convertView.findViewById(R.id.bestItemCover);
-            TextView bTitle = convertView.findViewById(R.id.bestItemTitle);
-            TextView bAuthor = convertView.findViewById(R.id.bestItemAuthor);
-
-            Best_items bestItems = bestItemsList.get(position);
-
-            bCover.setImageResource(bestItems.getCover());
-            bTitle.setText(bestItems.getTitle());
-            bAuthor.setText(bestItems.getAuthor());
-
-            return convertView;
+            return sb.toString();
         }
+
     }
-}

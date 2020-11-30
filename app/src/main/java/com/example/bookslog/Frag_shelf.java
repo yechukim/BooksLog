@@ -110,6 +110,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
             mShelf.add(items);
             Log.d(TAG, "added books on Shelf_items: "+items);
         }
+
         mShelfAdapter.notifyDataSetChanged();
         cursor.close();
     }
@@ -163,8 +164,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         String selection = BookShelf.BookEntry.COL_NAME_TITLE + " LIKE ?";
         String[] selectionArgs = {book.getBookTitle()};
         db.delete(BookShelf.BookEntry.TBL_NAME, selection, selectionArgs);
-        Log.d(TAG, "deleteBooks: " + selectionArgs);
-        db.close();
         mShelfAdapter.notifyDataSetChanged();
     }
 
@@ -191,4 +190,10 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+    @Override
+    public void onDestroy() {
+        helper.close();
+        super.onDestroy();
+    }
 }

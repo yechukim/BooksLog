@@ -67,14 +67,14 @@ public class Frag_statistic extends Fragment {
         db = helper.getReadableDatabase();
         String[] projection = {
                 BookShelf.BookEntry.COL_NAME_WRITE_DATE};
-        String selection = BookShelf.BookEntry.COL_NAME_WRITE_DATE + " LIKE ?";
-        String[] selectionArgs = {today};
+     /*   String selection = BookShelf.BookEntry.COL_NAME_WRITE_DATE + " LIKE ?";
+        String[] selectionArgs = {today};*/
 
         Cursor cursor = db.query(
                 BookShelf.BookEntry.TBL_NAME,
                 projection,
-                selection,
-                selectionArgs,
+                null,
+                null,
                 null,
                 null,
                 null);
@@ -99,6 +99,7 @@ public class Frag_statistic extends Fragment {
 
 
         }
+
 
 
         wholeCounts.setText("현재까지 총 " + String.valueOf(counts) + "권 읽었어요");
@@ -129,8 +130,14 @@ public class Frag_statistic extends Fragment {
         });
 
 
+
         return fragView;
     }
 
+    @Override
+    public void onDestroy() {
+        helper.close();
+        super.onDestroy();
+    }
 }
 
