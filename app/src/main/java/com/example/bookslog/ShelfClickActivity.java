@@ -1,6 +1,7 @@
 package com.example.bookslog;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,8 +43,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
     private GestureDetector mGestureDetector;
     int tYear, tMonth, tDay;
 
-    ShelfAdapter mShelfAdapter;
-    RecyclerView mRecyclerView;
     //db
     MyHelper myHelper;
     SQLiteDatabase db;
@@ -101,7 +100,9 @@ public class ShelfClickActivity extends AppCompatActivity implements
         values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE, writeDate.getText().toString());
         db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
         showToast("책꽂이에  저장되었습니다.");
-        //
+
+        //리사이클러뷰에 바로 추가
+         sendIntent();
     }
 
     void showToast(String msg) {
@@ -148,6 +149,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
                 String selection = BookShelf.BookEntry.COL_NAME_TITLE + " LIKE ?";
                 String[] selectionArgs = { mInitialBook.getBookTitle() };
                 db.update(BookShelf.BookEntry.TBL_NAME,values,selection, selectionArgs);
+
             }
         });
     }
@@ -156,6 +158,18 @@ public class ShelfClickActivity extends AppCompatActivity implements
         title.setHint("제목을 입력하세요.");
         author.setHint("저자를 입력하세요.");
         write.setHint("기록하고 싶은 내용을 입력하세요.");
+    }
+    //리사이클러뷰 결과 바로 반영되게
+    private void sendIntent(){
+        Intent intent = new Intent(getApplicationContext(),Frag_shelf.class);
+        intent.putExtra("title",title.getText().toString());
+        intent.putExtra("author",author.getText().toString());
+        intent.putExtra("content",write.getText().toString());
+        intent.putExtra("rate",ratingBar.getRating());
+        intent.putExtra("date",writeDate.getText().toString());
+        setResult(RESULT_OK,intent);
+        Log.d(TAG, "intent sent ");
+        finish();
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class Frag_statistic extends Fragment {
     private static final String TAG = "statistic";
     //ui
@@ -25,20 +26,17 @@ public class Frag_statistic extends Fragment {
     TextView during, bookCounts, wholeCounts;
     String txtDuring;
     int counts;
+    int btnCounts;
     String today, oneWeekBefore, oneMonthBefore, oneYearBefore;
-    int smallCounts;
     ArrayList<Shelf_items> mShelf = new ArrayList<>();
 
     //db
     SQLiteDatabase db;
     MyHelper helper;
 
-    public static String getCalculatedDate(String dateFormat, int days) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat s = new SimpleDateFormat(dateFormat);
-        cal.add(Calendar.DAY_OF_YEAR, days);
-        return s.format(new Date(cal.getTimeInMillis()));
-    }
+    //date
+    Date curDate, tod, week, month, year;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,14 +59,12 @@ public class Frag_statistic extends Fragment {
         oneYearBefore = getCalculatedDate("yyyy/M/d", -365);
         today = getCalculatedDate("yyyy/M/d", 0);
 
-        //db 1개당 1권... if title && author is same 제외
+        //db 1개당 1권(일단..)
 
         helper = new MyHelper(getActivity());
         db = helper.getReadableDatabase();
         String[] projection = {
                 BookShelf.BookEntry.COL_NAME_WRITE_DATE};
-     /*   String selection = BookShelf.BookEntry.COL_NAME_WRITE_DATE + " LIKE ?";
-        String[] selectionArgs = {today};*/
 
         Cursor cursor = db.query(
                 BookShelf.BookEntry.TBL_NAME,
@@ -79,28 +75,22 @@ public class Frag_statistic extends Fragment {
                 null,
                 null);
         while (cursor.moveToNext()) {
-            counts = cursor.getCount(); // db 개수 - 읽은 책 수
-            String oldString = cursor.getString(0);
-
+            counts = cursor.getCount(); // db 개수(책 수)
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/M/d");
             try {
-                Shelf_items item = new Shelf_items();
-                /*Date date = new SimpleDateFormat("yyyy/M/d").parse(oldString);
-                Log.d(TAG, "onCreateView: "+date); // to date
-                String newDate = new SimpleDateFormat("yyyy/M/d").format(date);
-                Log.d(TAG, "onCreateView: "+newDate); // to string
-                */
-                Date todayDate = new SimpleDateFormat("yyyy/M/d").parse(today);
-                Date weekAgo = new SimpleDateFormat("yyyy/M/d").parse(oneWeekBefore);
-
-
+                 curDate = dateFormat.parse(cursor.getString(0));
+                 tod = dateFormat.parse(today);
+                 week = dateFormat.parse(oneWeekBefore);
+                 month = dateFormat.parse(oneMonthBefore);
+                 year = dateFormat.parse(oneYearBefore);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+                Shelf_items items = new Shelf_items();
+            if(curDate.compareTo(year)<0){
 
-
+            }
         }
-
-
 
         wholeCounts.setText("현재까지 총 " + String.valueOf(counts) + "권 읽었어요");
         //디폴트 값은 이번주 , 이번주에 읽은 책 수
@@ -130,8 +120,14 @@ public class Frag_statistic extends Fragment {
         });
 
 
-
         return fragView;
+    }
+
+    public static String getCalculatedDate(String dateFormat, int days) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat s = new SimpleDateFormat(dateFormat);
+        cal.add(Calendar.DAY_OF_YEAR, days);
+        return s.format(new Date(cal.getTimeInMillis()));
     }
 
     @Override
@@ -139,5 +135,24 @@ public class Frag_statistic extends Fragment {
         helper.close();
         super.onDestroy();
     }
+
+    //책꽂이에 db 변경시 반영된다.
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (getFragmentManager() != null) {
+
+            getFragmentManager()
+                    .beginTransaction()
+                    .detach(this)
+                    .attach(this)
+                    .commit();
+            Log.d(TAG, "setUserVisibleHint: called");
+        }
+    }
+
 }
+
 

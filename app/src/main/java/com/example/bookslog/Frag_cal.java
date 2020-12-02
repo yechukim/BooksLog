@@ -2,6 +2,7 @@ package com.example.bookslog;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,28 +93,8 @@ public class Frag_cal extends Fragment {
                                 f_result += i_result;
                                 bookName.setText(f_result);
                             }
-
                         } while (cursor.moveToNext());
-
                     }
-/*                while (cursor.moveToNext()) {
-                    item = new Shelf_items();
-                    item.setBookTitle(cursor.getString(0));
-                    item.setWriteDate(cursor.getString(1));
-
-                    if(item.getWriteDate().equals(tapDate)){
-                        mShelf.add(item);
-                        Log.d(TAG, "onSelectedDayChange: mshelf item"+item);
-                        for(Shelf_items i: mShelf){
-                         //   f_result ="";
-                            i_result = i.getBookTitle() + " / ";
-                            Log.d(TAG, "onSelectedDayChange: for 문: "+i_result);
-                        }
-                        f_result +=i_result;
-                    }
-                    bookName.setText(f_result);
-                }
-                cursor.moveToPosition(-1);*/
                 }
 
             });

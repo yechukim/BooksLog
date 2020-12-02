@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +27,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Collections;
 
 public class Frag_best extends Fragment {
     Button btn_goSite, btn_search;
     EditText keyword;
-    TextView result;
+    ListView result;
     String sKeyword, str;
+    StringBuffer sb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,19 +64,21 @@ public class Frag_best extends Fragment {
 
                     @Override
                     public void run() {
-                         sKeyword = keyword.getText().toString();
-                         if(sKeyword.isEmpty()){
-                             Snackbar snackbar = Snackbar.make(getView(),"검색어를 입력하세요", BaseTransientBottomBar.LENGTH_SHORT);
-                             snackbar.show();
-                         }else {
-                             str = getSearch(sKeyword);
-                             getActivity().runOnUiThread(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     result.setText(str);
-                                 }
-                             });
-                         }
+                        sKeyword = keyword.getText().toString();
+                        if (sKeyword.isEmpty()) {
+                            Snackbar snackbar = Snackbar.make(getView(), "검색어를 입력하세요", BaseTransientBottomBar.LENGTH_SHORT);
+                            snackbar.show();
+                        } else {
+                            str = getSearch(sKeyword);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayAdapter<StringBuffer> adapter;
+                                    adapter = new ArrayAdapter<StringBuffer>(getActivity(), android.R.layout.simple_expandable_list_item_1, Collections.singletonList(sb));
+                                    result.setAdapter(adapter);
+                                }
+                            });
+                        }
                     }
                 }.start();
 
@@ -79,73 +86,66 @@ public class Frag_best extends Fragment {
         });
         return fragView;
     }
-        public String getSearch(String keyword) {
-            String clientID = "NI6zpCQXgTOaGarqdtAK";
-            String clientSecret = "lu3MzDnCUs";
-            StringBuffer sb = new StringBuffer();
 
-            try {
+    public String getSearch(String keyword) {
+        String clientID = "NI6zpCQXgTOaGarqdtAK";
+        String clientSecret = "lu3MzDnCUs";
+         sb = new StringBuffer();
 
-                String text = URLEncoder.encode(keyword, "UTF-8");
-                String apiURL = "https://openapi.naver.com/v1/search/book.xml?query=" + text + "&display=10" + "&start=1";
-                URL url = new URL(apiURL);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("X-Naver-Client-Id", clientID);
-                conn.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+        try {
 
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                XmlPullParser xpp = factory.newPullParser();
-                String tag;
-                //inputStream으로부터 xml값 받기
-                xpp.setInput(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String text = URLEncoder.encode(keyword, "UTF-8");
+            String apiURL = "https://openapi.naver.com/v1/search/book.xml?query=" + text + "&display=10" + "&start=1";
+            URL url = new URL(apiURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("X-Naver-Client-Id", clientID);
+            conn.setRequestProperty("X-Naver-Client-Secret", clientSecret);
 
-                xpp.next();
-                int eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    switch (eventType) {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xpp = factory.newPullParser();
+            String tag;
+            //inputStream으로부터 xml값 받기
+            xpp.setInput(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
-                        case XmlPullParser.START_TAG:
-                            tag = xpp.getName(); //태그 이름 얻어오기
+            xpp.next();
+            int eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
 
-                            if (tag.equals("item")) ; //첫번째 검색 결과
+                    case XmlPullParser.START_TAG:
+                        tag = xpp.getName(); //태그 이름 얻어오기
 
-                            else if (tag.equals("title")) {
-                                sb.append("책 제목 : ");
-                                xpp.next();
-                                sb.append(xpp.getText().replaceAll("\\<.*?>",""));
-                                sb.append("\n");
-                                sb.append("\n");
-                            } else if (tag.equals("description")) {
-                                sb.append("책 내용 : ");
-                                xpp.next();
-                                sb.append(xpp.getText());
-                                sb.append("\n");
-                                sb.append("\n");
-                                sb.append("-------------------------------------");
-                                sb.append("\n");
-                            }else if(tag.equals("author")){
-                                sb.append("저자 정보 : ");
-                                xpp.next();
-                                sb.append(xpp.getText());
-                                sb.append("\n");
-                                sb.append("\n");
-                            }else if(tag.equals("price")){
-                                sb.append("가격 : ");
-                                xpp.next();
-                                sb.append(xpp.getText()+"원");
-                                sb.append("\n");
-                                sb.append("\n");
-                            }
-                            break;
-                    }
-                    eventType = xpp.next();
+                        if (tag.equals("item")) ; //첫번째 검색 결과
+
+                        else if (tag.equals("title")) {
+                            sb.append("책 제목 : ");
+                            xpp.next();
+                            sb.append(xpp.getText().replaceAll("\\<.*?>", ""));
+                            sb.append("\n");
+                            sb.append("\n");
+                        } else if (tag.equals("author")) {
+                            sb.append("저자 정보 : ");
+                            xpp.next();
+                            sb.append(xpp.getText());
+                            sb.append("\n");
+                            sb.append("\n");
+                        } else if (tag.equals("price")) {
+                            sb.append("가격 : ");
+                            xpp.next();
+                            sb.append(xpp.getText() + "원");
+                            sb.append("\n");
+                            sb.append("\n");
+                        }
+                        break;
                 }
-
-            } catch (Exception e) {
-                return e.toString();
+                eventType = xpp.next();
             }
-            return sb.toString();
-        }
 
+        } catch (Exception e) {
+            return e.toString();
+        }
+        return sb.toString();
     }
+
+}

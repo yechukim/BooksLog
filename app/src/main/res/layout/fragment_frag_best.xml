@@ -36,21 +36,12 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
 
-            <TextView
+            <ListView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="검색을 해주세요"
-                android:padding="10dp"
-                android:textSize="17sp" />
-        </ScrollView>
-
-
+                android:layout_weight="1"/>
         <Button
             android:layout_margin="10dp"
             android:id="@+id/btn_goSite"
