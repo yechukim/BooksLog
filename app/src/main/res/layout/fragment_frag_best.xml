@@ -8,48 +8,27 @@
     tools:context=".Frag_best">
 
     <LinearLayout
-        android:id="@+id/layout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/keyword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:hint="키워드를 입력하세요" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/search_book"
-            android:background="@drawable/button"
-            android:text="검색" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <ListView
+            android:listSelector="#92F8DBAF"
+            android:id="@+id/result"
+            tools:listitem="@layout/searched_book_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-            <ListView
-                android:id="@+id/result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
         <Button
-            android:layout_margin="10dp"
             android:id="@+id/btn_goSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:background="@drawable/button"
             android:padding="15dp"
             android:text="베스트셀러 보러가기" />

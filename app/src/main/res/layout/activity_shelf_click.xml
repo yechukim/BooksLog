@@ -134,6 +134,7 @@
         </LinearLayout>
         <Button
             android:id="@+id/btnSave"
+            android:background="@drawable/button"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
