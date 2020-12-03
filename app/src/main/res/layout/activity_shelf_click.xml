@@ -130,9 +130,12 @@
             <TextView
                 android:id="@+id/result"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                />
         </LinearLayout>
         <Button
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/btnSave"
             android:background="@drawable/button"
             android:layout_gravity="center"

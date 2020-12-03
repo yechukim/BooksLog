@@ -37,6 +37,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
     private ImageView bcover;
     private TextView writeDate;
     private Button btnSave;
+    View mView;
   //변수
     private boolean mIsNewBook;
     private Shelf_items mInitialBook;
@@ -50,7 +51,8 @@ public class ShelfClickActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shelf_click);
+        mView = getLayoutInflater().from(this).inflate(R.layout.activity_shelf_click,null);
+        setContentView(mView);
         ActionBar ab = getSupportActionBar();
         ab.setTitle("책꽂이로 돌아가기");
         ab.setDisplayHomeAsUpEnabled(true);
@@ -74,17 +76,17 @@ public class ShelfClickActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 if (title.getText().toString().isEmpty()) {
-                    showToast("책 제목은 필수 입력항목입니다.");
+                    showSnack("책 제목은 필수 입력항목입니다.");
                 } else {
                     bookInsert();
                 }
             }
         });
         if (getIncomingIntent()) {
-            //새 책
+            //새로 작성
             setNewBookProperties();
         } else {
-            //새 책 아님
+            //기존 작성 클릭
             setBookProperties();
         }
         setListeners();
@@ -99,14 +101,13 @@ public class ShelfClickActivity extends AppCompatActivity implements
         values.put(BookShelf.BookEntry.COL_NAME_RATING, ratingBar.getRating());
         values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE, writeDate.getText().toString());
         db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
-        showToast("책꽂이에  저장되었습니다.");
-
         //리사이클러뷰에 바로 추가
          sendIntent();
+         Toast.makeText(getApplicationContext(),"책꽂이에 저장되었습니다.",Toast.LENGTH_SHORT).show();
     }
 
-    void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    void showSnack(String msg) {
+        Snackbar.make(mView,msg,Snackbar.LENGTH_SHORT).setAnchorView(btnSave).show();
     }
 
     private void setListeners() {

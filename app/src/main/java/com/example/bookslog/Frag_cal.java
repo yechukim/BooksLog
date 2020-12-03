@@ -66,7 +66,27 @@ public class Frag_cal extends Fragment {
                 null,
                 null);
 
-        //날짜 선택
+        //오늘날짜 기록 바로 보여주기
+        if (cursor.moveToFirst()) {
+            do {
+                item = new Shelf_items();
+                item.setBookTitle(cursor.getString(0));
+                item.setWriteDate(cursor.getString(1));
+
+                if (item.getWriteDate().equals(selectedDate.getText().toString())) {
+                    mShelf.add(item);
+
+                    for (Shelf_items i : mShelf) {
+                        i_result = i.getBookTitle() + " , ";
+                    }
+                    f_result += i_result;
+                    bookName.setText(f_result);
+                }
+            } while (cursor.moveToNext());
+        }
+
+
+        //날짜 선택하면 그에 맞는 기록 보여주기
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                 @Override
                 public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {

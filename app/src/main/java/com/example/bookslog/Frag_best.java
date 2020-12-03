@@ -53,20 +53,19 @@ public class Frag_best extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.bar, menu);
 
         item_search = menu.findItem(R.id.action_search);
         search1 = (SearchView) item_search.getActionView();
         search1.setQueryHint("책 검색하기");
 
-        SearchViesListener listener = new SearchViesListener();
+        SearchViewListener listener = new SearchViewListener();
         search1.setOnQueryTextListener(listener);
 
     }
 
     //검색 완료하고 submit 하면 스레드가 query에 해당 키워드가 들어가고 thread가 시작된다.
-    class SearchViesListener implements SearchView.OnQueryTextListener {
+    class SearchViewListener implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
             NetworkThread thread = new NetworkThread(query);

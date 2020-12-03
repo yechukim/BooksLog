@@ -93,4 +93,11 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
         void onShelfClick(int position);
     }
 
-}
+    //액션바 검색 필터 메소드
+    public void filter(ArrayList<Shelf_items> shelf_items){
+        mShelf = new ArrayList<>();
+        mShelf.addAll(shelf_items);
+        notifyDataSetChanged();
+        }
+    }
+

@@ -87,9 +87,7 @@ public class Frag_statistic extends Fragment {
                 e.printStackTrace();
             }
                 Shelf_items items = new Shelf_items();
-            if(curDate.compareTo(year)<0){
 
-            }
         }
 
         wholeCounts.setText("현재까지 총 " + String.valueOf(counts) + "권 읽었어요");

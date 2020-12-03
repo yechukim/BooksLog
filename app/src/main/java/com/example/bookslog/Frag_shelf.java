@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener,
-        View.OnClickListener {
+        View.OnClickListener{
     private static final String TAG = "shelf";
 
     //UI components
@@ -72,6 +72,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         mRecyclerView.setAdapter(mShelfAdapter);
         setHasOptionsMenu(true);
         addBooks();
+
         return fragView;
     }
 
@@ -116,26 +117,37 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         getActivity().invalidateOptionsMenu();
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.bar, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        MenuItem item_search = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item_search.getActionView();
         searchView.setQueryHint("책 제목으로 검색하기");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                newText = newText.toLowerCase();
+                ArrayList<Shelf_items> shelf_items = new ArrayList<>();
+                for(Shelf_items shelfItems: mShelf){
+                    String itemName = shelfItems.getBookTitle().toLowerCase();
+                    if(itemName.contains(newText)){
+                        shelf_items.add(shelfItems);
+                    }
+                }
+                mShelfAdapter.filter(shelf_items);
+
+                return true;
             }
         });
     }
-
     //카드뷰 클릭
     @Override
     public void onShelfClick(int position) {
@@ -190,7 +202,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             deleteBooks(mShelf.get(viewHolder.getAdapterPosition()));
 
-            Snackbar snackbar = Snackbar.make(getView(), "아이템이 삭제되었습니다.", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(getView(), "아이템이 삭제되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
             snackbar.show();
             snackbar.setActionTextColor(Color.YELLOW);
             //스낵바 되돌리기 뜨게..?
@@ -203,3 +215,4 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     };
 
 }
+
