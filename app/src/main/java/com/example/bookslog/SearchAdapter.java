@@ -2,6 +2,7 @@ package com.example.bookslog;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends BaseAdapter {
+    private static final String TAG = "search";
     Context context;
     LayoutInflater layoutInflater;
     List<SearchItems> sItems;
@@ -57,7 +59,14 @@ public class SearchAdapter extends BaseAdapter {
         b_author.setText(searchItems.getAuthor());
         b_title.setText(searchItems.getTitle());
         b_price.setText(searchItems.getPrice());
-        b_cover.setImageResource(R.drawable.bcover);
+
+        if(searchItems.getImageUrl()==null){
+         b_cover.setImageResource(R.drawable.bookwide);
+        }
+        else{
+            Glide.with(context).load(searchItems.getImageUrl()).into(b_cover);
+        }
+
         return convertView;
     }
 
@@ -66,8 +75,6 @@ public class SearchAdapter extends BaseAdapter {
         mItems.setAuthor(author);
         mItems.setPrice(price);
         mItems.setTitle(title);
-
-
         sItems.add(mItems);
     }
 }

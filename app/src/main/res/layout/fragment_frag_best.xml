@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
     android:orientation="vertical"
     tools:context=".Frag_best">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <ListView
-            android:listSelector="#92F8DBAF"
-            android:id="@+id/result"
-            tools:listitem="@layout/searched_book_list"
+        <TextView
+            android:id="@+id/noResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:gravity="center"
+            android:text="검색된 결과가 없습니다.\n 검색 아이콘을 눌러 책을 검색하세요."
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/noResultIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/no_search"
+            android:visibility="visible"
+            app:tint="@color/colorPrimary" />
+
+        <ImageView
+            android:id="@+id/loading"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/loading"
+            android:visibility="gone"
+            app:tint="@color/colorPrimary"
+            tools:visibility="visible" />
+
+        <ListView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:listSelector="@color/colorPrimary"
+            tools:listitem="@layout/searched_book_list" />
 
         <Button
             android:id="@+id/btn_goSite"

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Frag_statistic">
 
@@ -96,11 +97,12 @@
         android:textSize="18sp" />
 
     <ImageView
+        app:tint="@color/colorPrimary"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="5dp"
-        android:src="@drawable/happy" />
+        android:src="@drawable/bookwide" />
 
 
 </LinearLayout>

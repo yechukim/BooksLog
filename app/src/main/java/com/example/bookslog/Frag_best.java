@@ -7,15 +7,21 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,6 +40,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Frag_best extends Fragment {
 
+    TextView noResult;
+    ImageView noResultIcon,loading;
     Button btn_goSite;
     ListView list1;
     MenuItem item_search;
@@ -68,6 +76,10 @@ public class Frag_best extends Fragment {
     class SearchViewListener implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
+            loading.setVisibility(View.VISIBLE);
+            noResult.setVisibility(View.GONE);
+            noResultIcon.setVisibility(View.GONE);
+            mList.clear();
             NetworkThread thread = new NetworkThread(query);
             thread.start();
             return false;
@@ -95,7 +107,7 @@ public class Frag_best extends Fragment {
                 //검색어 인코딩
                 keyword = URLEncoder.encode(keyword, "UTF-8");
                 //접속 주소
-                String site = "https://openapi.naver.com/v1/search/book.xml?query=" + keyword + "&display=10" + "&start=1";
+                String site = "https://openapi.naver.com/v1/search/book.xml?query=" + keyword + "&display=100" + "&start=1";
 
                 //접속
                 URL url = new URL(site);
@@ -137,8 +149,8 @@ public class Frag_best extends Fragment {
 
                     items.setTitle(title);
                     items.setAuthor("저자: " + author);
-                    items.setPrice("가격: " + price);
-
+                    items.setPrice("가격: " + price +"원");
+                    items.setImageUrl(img);
                     mList.add(items);
                 }
                 //리스트 뷰를 구성한다.
@@ -147,6 +159,7 @@ public class Frag_best extends Fragment {
                     public void run() {
                         searchAdapter = (SearchAdapter) list1.getAdapter();
                         searchAdapter.notifyDataSetChanged();
+                        loading.setVisibility(View.GONE);
                     }
                 });
 
@@ -161,6 +174,9 @@ public class Frag_best extends Fragment {
                              Bundle savedInstanceState) {
         View fragView = inflater.inflate(R.layout.fragment_frag_best, container, false);
         btn_goSite = fragView.findViewById(R.id.btn_goSite);
+        noResult = fragView.findViewById(R.id.noResult);
+        noResultIcon = fragView.findViewById(R.id.noResultIcon);
+        loading = fragView.findViewById(R.id.loading);
         setHasOptionsMenu(true);
         //베스트 셀러 사이트로 이동
         btn_goSite.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +191,17 @@ public class Frag_best extends Fragment {
         list1 = fragView.findViewById(R.id.result);
         searchAdapter = new SearchAdapter(getContext(), mList);
         list1.setAdapter(searchAdapter);
+
+
+        list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               String searchBookTitle = mList.get(position).getTitle();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com/search?q="+searchBookTitle));
+                startActivity(intent);
+            }
+
+        });
 
         return fragView;
     }

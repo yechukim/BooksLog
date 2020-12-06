@@ -19,7 +19,7 @@ public final class BookShelf{
                     BookEntry.COL_NAME_TITLE +" TEXT, " +
                     BookEntry.COL_NAME_AUTHOR + " TEXT, " +
                     BookEntry.COL_NAME_CONTENT + " TEXT, " +
-                    BookEntry.COL_NAME_RATING + " REAL, " +
+                    BookEntry.COL_NAME_RATING + " INTEGER, " +
                     BookEntry.COL_NAME_WRITE_DATE + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =

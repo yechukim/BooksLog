@@ -8,14 +8,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     TabLayout tabs;
     ViewPager viewPager;
     ActionBar actionBar;
     MyPageAdapter adapter;
-    int[] tabUnselectedImg = {R.drawable.shelf, R.drawable.cal, R.drawable.statistics, R.drawable.best};
-    int[] tabSelectedImg = {R.drawable.bk_selected, R.drawable.cal_selected, R.drawable.statistics_selected, R.drawable.best_selected};
-    String[] barTitle = {"책꽂이", "북스로그 달력", "북스로그 통계", "베스트 셀러 & 책 검색"};
+    int[] tabImg ={R.drawable.shelf, R.drawable.cal, R.drawable.leaderboard, R.drawable.search_w};
+    String[] barTitle = {"책꽂이", "북스로그 달력", "북스로그 통계", "책 검색 & 베스트 셀러"};
     int position;
 
     @Override
@@ -27,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
         tabs = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(4);
-        tabs.addTab(tabs.newTab().setIcon(tabSelectedImg[0]));
-        for (int i = 1; i < tabSelectedImg.length; i++) {
-            tabs.addTab(tabs.newTab().setIcon(tabUnselectedImg[i]));
+      for(int i=0; i<tabImg.length; i++){
+            tabs.addTab(tabs.newTab().setIcon(tabImg[i]));
         }
         tabs.setTabGravity(tabs.GRAVITY_FILL);
 
@@ -43,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 position = tab.getPosition();
                 actionBar.setTitle(barTitle[position]);
-                tab.setIcon(tabSelectedImg[position]);
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.setIcon(tabUnselectedImg[position]);
+                tab.setIcon(tabImg[position]);
             }
 
             @Override
@@ -57,9 +55,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    //2버 누르면 종료되게 나중에 설정하기
-    public interface BackPressedListener {
-        void onBackPressed();
-    }
-}
 
+}

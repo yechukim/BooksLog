@@ -19,6 +19,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener,
-        View.OnClickListener{
+        View.OnClickListener {
     private static final String TAG = "shelf";
 
     //UI components
@@ -63,8 +64,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         //fab
         fab = fragView.findViewById(R.id.fab);
         fab.setOnClickListener(this);
-        fab.setImageResource(R.drawable.write);
-
+        fab.setImageResource(R.drawable.add);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(mRecyclerView);
@@ -72,7 +72,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         mRecyclerView.setAdapter(mShelfAdapter);
         setHasOptionsMenu(true);
         addBooks();
-
         return fragView;
     }
 
@@ -102,7 +101,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
             items.setBookTitle(cursor.getString(0));
             items.setAuthor(cursor.getString(1));
             items.setWrite(cursor.getString(2));
-            items.setRatingBar(cursor.getFloat(3));
+            items.setRatingBar(cursor.getInt(3));
             items.setWriteDate(cursor.getString(4));
             mShelf.add(items);
             Log.d(TAG, "added books on Shelf_items: "+items);
@@ -117,37 +116,36 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         getActivity().invalidateOptionsMenu();
     }
 
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.bar, menu);
-        MenuItem item_search = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item_search.getActionView();
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("책 제목으로 검색하기");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
 
+/*        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String newText) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText = newText.toLowerCase();
-                ArrayList<Shelf_items> shelf_items = new ArrayList<>();
-                for(Shelf_items shelfItems: mShelf){
-                    String itemName = shelfItems.getBookTitle().toLowerCase();
-                    if(itemName.contains(newText)){
-                        shelf_items.add(shelfItems);
+                //아이템 추가후 바로 삭제하면 오류남.. 왜 때문이지
+              newText = newText.toLowerCase();
+                ArrayList<Shelf_items> nShelf = new ArrayList<>();
+                for (Shelf_items items : mShelf) {
+                    String itemName = items.getBookTitle().toLowerCase();
+                    if (itemName.contains(newText)) {
+                        nShelf.add(items);
                     }
+                    mShelfAdapter.filter(nShelf);
                 }
-                mShelfAdapter.filter(shelf_items);
-
                 return true;
             }
         });
-    }
+ */   }
+
     //카드뷰 클릭
     @Override
     public void onShelfClick(int position) {
@@ -159,7 +157,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     // 새로 기록하기
     @Override
     public void onClick(View v) {
-        fab.setImageResource(R.drawable.write_selected);
         Intent intent = new Intent(getActivity(), ShelfClickActivity.class);
         startActivityForResult(intent,0);
     }
@@ -173,6 +170,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
            items.setWrite(data.getStringExtra("content"));
            items.setRatingBar(data.getIntExtra("rate",0));
            items.setWriteDate(data.getStringExtra("date"));
+
            mShelf.add(items);
            Log.d(TAG, "received intent "+items);
            mShelfAdapter.notifyDataSetChanged();
@@ -204,8 +202,8 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
 
             Snackbar snackbar = Snackbar.make(getView(), "아이템이 삭제되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
             snackbar.show();
-            snackbar.setActionTextColor(Color.YELLOW);
             //스낵바 되돌리기 뜨게..?
+           // snackbar.setActionTextColor(Color.YELLOW);
         }
 
         @Override
@@ -215,4 +213,3 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     };
 
 }
-

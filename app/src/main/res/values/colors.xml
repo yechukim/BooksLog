@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#AD989898</color>
-    <color name="colorPrimaryDark">@android:color/widget_edittext_dark</color>
-    <color name="colorAccent">#FFBA55</color>
+    <color name="colorPrimary">#B2DFDB</color>
+    <color name="colorPrimaryDark">#004D40</color>
+    <color name="colorAccent">#4DB6AC</color>
 </resources>

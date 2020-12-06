@@ -66,7 +66,6 @@ public class Frag_cal extends Fragment {
                 null,
                 null);
 
-        //오늘날짜 기록 바로 보여주기
         if (cursor.moveToFirst()) {
             do {
                 item = new Shelf_items();
@@ -75,9 +74,11 @@ public class Frag_cal extends Fragment {
 
                 if (item.getWriteDate().equals(selectedDate.getText().toString())) {
                     mShelf.add(item);
+                    Log.d(TAG, "onSelectedDayChange: item" + item);
 
                     for (Shelf_items i : mShelf) {
                         i_result = i.getBookTitle() + " , ";
+                        Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
                     }
                     f_result += i_result;
                     bookName.setText(f_result);
@@ -85,41 +86,46 @@ public class Frag_cal extends Fragment {
             } while (cursor.moveToNext());
         }
 
-
-        //날짜 선택하면 그에 맞는 기록 보여주기
+        //날짜 선택
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                @Override
-                public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
-                    tapDate = year + "/" + (month + 1) + "/" + dayOfMonth;
-                    selectedDate.setText(tapDate);
-                    mShelf.clear();
-                    f_result = "";
-                    bookName.setText("기록없음");
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                tapDate = year + "/" + (month + 1) + "/" + dayOfMonth;
+                selectedDate.setText(tapDate);
+                mShelf.clear();
+                f_result = "";
+                bookName.setText("기록없음");
 
-                    if (cursor.moveToFirst()) {
-                        do {
-                            item = new Shelf_items();
-                            item.setBookTitle(cursor.getString(0));
-                            item.setWriteDate(cursor.getString(1));
+                if (cursor.moveToFirst()) {
+                    do {
+                        item = new Shelf_items();
+                        item.setBookTitle(cursor.getString(0));
+                        item.setWriteDate(cursor.getString(1));
 
-                            if (item.getWriteDate().equals(tapDate)) {
-                                mShelf.add(item);
-                                Log.d(TAG, "onSelectedDayChange: item" + item);
+                        if (item.getWriteDate().equals(tapDate)) {
+                            mShelf.add(item);
+                            Log.d(TAG, "onSelectedDayChange: item" + item);
 
-                                for (Shelf_items i : mShelf) {
-                                    i_result = i.getBookTitle() + " , ";
-                                    Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
-                                }
-                                f_result += i_result;
-                                bookName.setText(f_result);
+                            for (Shelf_items i : mShelf) {
+                                i_result = i.getBookTitle() + " , ";
+                                Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
                             }
-                        } while (cursor.moveToNext());
-                    }
+                            f_result += i_result;
+                            bookName.setText(f_result);
+                        }
+                    } while (cursor.moveToNext());
                 }
+            }
 
-            });
+        });
 
-            return fragView;
+        return fragView;
 
-        }
     }
+
+    @Override
+    public void onDestroy() {
+        helper.close();
+        super.onDestroy();
+    }
+}

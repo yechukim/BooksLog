@@ -11,10 +11,10 @@ public class Shelf_items implements Parcelable {
     private String author;
     private String write;
     private String editDate;
-    private float ratingBar;
+    private int ratingBar;
 
 
-    public Shelf_items(String bookTitle, String author, String write, float ratingBar, String writeDate) {
+    public Shelf_items(String bookTitle, String author, String write, int ratingBar, String writeDate) {
         //this.bookCover = bookCover;
         this.bookTitle = bookTitle;
         this.author = author;
@@ -106,11 +106,11 @@ public class Shelf_items implements Parcelable {
         this.write = write;
     }
 
-    public float getRatingBar() {
+    public int getRatingBar() {
         return ratingBar;
     }
 
-    public void setRatingBar(float ratingBar) {
+    public void setRatingBar(int ratingBar) {
         this.ratingBar = ratingBar;
     }
 
@@ -128,7 +128,7 @@ public class Shelf_items implements Parcelable {
         dest.writeString(writeDate);
         dest.writeString(editDate);
         dest.writeString(write);
-        dest.writeFloat(ratingBar);
+        dest.writeInt(ratingBar);
     }
 
     @Override
