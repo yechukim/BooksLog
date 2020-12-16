@@ -22,6 +22,11 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
     ArrayList<Shelf_items> mShelf;
     private OnShelfListener onShelfListener;
 
+    public ShelfAdapter(Context context, ArrayList<Shelf_items> mShelf) {
+        this.context = context;
+        this.mShelf = mShelf;
+    }
+
     public ShelfAdapter(Context context, OnShelfListener onShelfListener, ArrayList<Shelf_items> mShelf) {
         this.context = context;
         this.onShelfListener = onShelfListener;
@@ -92,17 +97,5 @@ public class ShelfAdapter extends RecyclerView.Adapter<ShelfAdapter.ViewHolder> 
     public interface OnShelfListener {
         void onShelfClick(int position);
     }
-    public void filter(ArrayList<Shelf_items> shelf_items){
-        mShelf = new ArrayList<>();
-        mShelf.addAll(shelf_items);
-        notifyDataSetChanged();
-    }
-
-    //액션바 검색 필터 메소드
-    public void filter(ArrayList<Shelf_items> shelf_items){
-        mShelf = new ArrayList<>();
-        mShelf.addAll(shelf_items);
-        notifyDataSetChanged();
-        }
     }
 

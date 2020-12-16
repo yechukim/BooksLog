@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -62,7 +63,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
         ratingBar = findViewById(R.id.ratingBar);
         writeDate = findViewById(R.id.writeDate);
 
-
         Calendar cal = Calendar.getInstance();
         tYear = cal.get(Calendar.YEAR);
         tMonth = cal.get(Calendar.MONTH) + 1;
@@ -100,7 +100,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
         values.put(BookShelf.BookEntry.COL_NAME_WRITE_DATE, writeDate.getText().toString());
         db.insert(BookShelf.BookEntry.TBL_NAME, null, values);
         showToast("책꽂이에  저장되었습니다.");
-         sendIntent();
+        sendIntent();
     }
 
     void showToast(String msg) {
@@ -243,6 +243,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
         if (onInteraction()) {
             offInteraction();
         }
+        NavUtils.navigateUpFromSameTask(this);
         super.onBackPressed();
 
     }

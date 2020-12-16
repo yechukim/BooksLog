@@ -45,22 +45,14 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     MyHelper helper;
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragView = inflater.inflate(R.layout.fragment_frag_shelf, container, false);
         mRecyclerView = fragView.findViewById(R.id.recyclerView);
-        helper = new MyHelper(getContext());
-        db = helper.getReadableDatabase();
         //fab
         fab = fragView.findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -76,6 +68,9 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     }
 
     public void addBooks() {
+
+        helper = new MyHelper(getContext());
+        db = helper.getReadableDatabase();
 
         String[] projection = {
                 BookShelf.BookEntry.COL_NAME_TITLE,
@@ -113,9 +108,12 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     @Override
     public void onResume() {
         super.onResume();
+        mShelf.clear();
+        addBooks();
         getActivity().invalidateOptionsMenu();
     }
 
+/*
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -124,6 +122,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("책 제목으로 검색하기");
 
+*/
 /*        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String newText) {
@@ -144,7 +143,9 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
                 return true;
             }
         });
- */   }
+ *//*
+   }
+*/
 
     //카드뷰 클릭
     @Override
@@ -170,7 +171,6 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
            items.setWrite(data.getStringExtra("content"));
            items.setRatingBar(data.getIntExtra("rate",0));
            items.setWriteDate(data.getStringExtra("date"));
-
            mShelf.add(items);
            Log.d(TAG, "received intent "+items);
            mShelfAdapter.notifyDataSetChanged();

@@ -35,6 +35,13 @@ public class Frag_cal extends Fragment {
     Cursor cursor;
     Shelf_items item;
 
+    //db 읽어오기 책 제목, 날짜
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,7 +57,48 @@ public class Frag_cal extends Fragment {
         tDay = cal.get(Calendar.DAY_OF_MONTH);
         selectedDate.setText(tYear + "/" + tMonth + "/" + tDay);
 
-        //db 읽어오기 책 제목, 날짜
+        //db 읽어오기
+        bookName.setText("기록없음");
+        readDB();
+
+        //날짜 선택
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                tapDate = year + "/" + (month + 1) + "/" + dayOfMonth;
+                selectedDate.setText(tapDate);
+                mShelf.clear();
+                f_result = "";
+                bookName.setText("기록없음");
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        item = new Shelf_items();
+                        item.setBookTitle(cursor.getString(0));
+                        item.setWriteDate(cursor.getString(1));
+
+                        if (item.getWriteDate().equals(tapDate)) {
+                            mShelf.add(item);
+                            //Log.d(TAG, "onSelectedDayChange: item" + item);
+
+                            for (Shelf_items i : mShelf) {
+                                i_result = i.getBookTitle() + " , ";
+                                //Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
+                            }
+                            f_result += i_result;
+                            bookName.setText(f_result);
+                        }
+                    } while (cursor.moveToNext());
+                }
+            }
+
+        });
+
+        return fragView;
+
+    }
+
+    public void readDB(){
         helper = new MyHelper(getActivity());
         db = helper.getReadableDatabase();
         String[] projection = {
@@ -74,54 +122,18 @@ public class Frag_cal extends Fragment {
 
                 if (item.getWriteDate().equals(selectedDate.getText().toString())) {
                     mShelf.add(item);
-                    Log.d(TAG, "onSelectedDayChange: item" + item);
+                    //Log.d(TAG, "onSelectedDayChange: item" + item);
 
                     for (Shelf_items i : mShelf) {
                         i_result = i.getBookTitle() + " , ";
-                        Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
                     }
                     f_result += i_result;
                     bookName.setText(f_result);
                 }
             } while (cursor.moveToNext());
         }
-
-        //날짜 선택
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
-                tapDate = year + "/" + (month + 1) + "/" + dayOfMonth;
-                selectedDate.setText(tapDate);
-                mShelf.clear();
-                f_result = "";
-                bookName.setText("기록없음");
-
-                if (cursor.moveToFirst()) {
-                    do {
-                        item = new Shelf_items();
-                        item.setBookTitle(cursor.getString(0));
-                        item.setWriteDate(cursor.getString(1));
-
-                        if (item.getWriteDate().equals(tapDate)) {
-                            mShelf.add(item);
-                            Log.d(TAG, "onSelectedDayChange: item" + item);
-
-                            for (Shelf_items i : mShelf) {
-                                i_result = i.getBookTitle() + " , ";
-                                Log.d(TAG, "onSelectedDayChange: i_result: " + i_result);
-                            }
-                            f_result += i_result;
-                            bookName.setText(f_result);
-                        }
-                    } while (cursor.moveToNext());
-                }
-            }
-
-        });
-
-        return fragView;
-
     }
+
 
     @Override
     public void onDestroy() {

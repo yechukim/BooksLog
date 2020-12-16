@@ -108,17 +108,17 @@
                 android:scrollbars="vertical"
                 android:focusableInTouchMode="false" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="평점"
-                android:textSize="17sp" />
-
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="@style/RatingBar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="평점"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/writeDate"

@@ -8,13 +8,32 @@
     tools:context=".Frag_statistic">
 
     <TextView
+        android:id="@+id/firstLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:text="첫 기록"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/lastLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:text="마지막 기록"
+        android:textSize="18sp" />
+
+
+    <TextView
         android:id="@+id/wholeCounts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:text="총 (몇)권 읽었어요!"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:layout_width="80dp"
