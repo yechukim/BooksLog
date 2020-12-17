@@ -43,6 +43,7 @@ public class Frag_statistic extends Fragment {
         wholeCounts = fragView.findViewById(R.id.wholeCounts);
         firstLog = fragView.findViewById(R.id.firstLog);
         lastLog = fragView.findViewById(R.id.lastLog);
+
         //db
         helper = new MyHelper(getActivity());
         db = helper.getReadableDatabase();
@@ -67,10 +68,19 @@ public class Frag_statistic extends Fragment {
 
             }else if(cursor.getPosition()==cursor.getCount()-1){
                 d2 =  cursor.getString(0);
-                t2 = cursor.getString(1); }
+                t2 = cursor.getString(1);
+            }
         }
         firstLog.setText("첫 기록: "+d1+", "+t1);
         lastLog.setText("마지막 기록: "+d2+", "+t2);
+
+        if(counts==0){
+            firstLog.setText("첫 기록: 기록없음");
+            lastLog.setText("마지막 기록 : 기록없음");
+        }else if(counts==1){
+            lastLog.setText("마지막 기록: "+d1+", "+t1);
+        }
+
         wholeCounts.setText("현재까지 총 " + String.valueOf(counts) + "권 읽었어요");
         return fragView;
     }
