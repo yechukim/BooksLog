@@ -2,7 +2,6 @@ package com.example.bookslog;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +37,8 @@ public class Frag_cal extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        mShelf.clear();
+        readDB();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class Frag_cal extends Fragment {
 
         //db 읽어오기
         bookName.setText("기록없음");
-        readDB();
+       // readDB();
 
         //날짜 선택
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -124,10 +123,14 @@ public class Frag_cal extends Fragment {
                     mShelf.add(item);
                     //Log.d(TAG, "onSelectedDayChange: item" + item);
 
-                    for (Shelf_items i : mShelf) {
-                        i_result = i.getBookTitle() + " , ";
+                    f_result ="";
+                    for (Shelf_items item : mShelf) {
+                        i_result = item.getBookTitle() + " , ";
+
+                       // Log.d(TAG, "i: "+i_result);
+                        f_result += i_result;
                     }
-                    f_result += i_result;
+                   //Log.d(TAG, "f: "+f_result);
                     bookName.setText(f_result);
                 }
             } while (cursor.moveToNext());

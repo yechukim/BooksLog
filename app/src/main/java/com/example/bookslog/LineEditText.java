@@ -22,7 +22,7 @@ public class LineEditText extends AppCompatEditText {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(2);
-        mPaint.setColor(Color.GRAY);
+        mPaint.setColor(Color.WHITE);
 
     }
 
