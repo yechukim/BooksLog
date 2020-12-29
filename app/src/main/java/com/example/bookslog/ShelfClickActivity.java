@@ -6,8 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,6 +42,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
     private ImageView bcover;
     private TextView writeDate;
     private Button btnSave;
+    View toastLayout;
   //변수
     private boolean mIsNewBook;
     private Shelf_items mInitialBook;
@@ -52,6 +57,12 @@ public class ShelfClickActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelf_click);
+
+        LayoutInflater inflater = getLayoutInflater();
+        toastLayout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.custom_toast_layout));
+        TextView toast_text = toastLayout.findViewById(R.id.toast_text);
+        toast_text.setText("입력하려면 두 번 탭하세요.");
+
         ActionBar ab = getSupportActionBar();
         ab.setTitle("책꽂이로 돌아가기");
         ab.setDisplayHomeAsUpEnabled(true);
@@ -205,7 +216,12 @@ public class ShelfClickActivity extends AppCompatActivity implements
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        return false;
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(toastLayout);
+        toast.show();
+        return true;
     }
 
     //2번 탭하여 수정하기
