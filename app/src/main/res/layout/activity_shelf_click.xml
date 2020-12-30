@@ -43,14 +43,21 @@
                             android:text="제목"
                             android:textSize="20sp" />
 
-                        <EditText
-                            android:id="@+id/title"
-                            android:focusableInTouchMode="false"
+                        <ScrollView
+                            android:scrollbars="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:padding="10dp"
-                            tools:text="책 제목"/>
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/title"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="10dp"
+                                android:focusableInTouchMode="false"
+                                android:padding="10dp"
+                                tools:text="책 제목" />
+                        </ScrollView>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -67,13 +74,13 @@
                             android:textSize="20sp" />
 
                         <EditText
-                            android:focusableInTouchMode="false"
                             android:id="@+id/author"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginLeft="10dp"
+                            android:focusableInTouchMode="false"
                             android:padding="10dp"
-                            tools:text="저자"/>
+                            tools:text="저자" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -92,8 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:focusableInTouchMode="false"
                 android:layout_marginBottom="10dp"
+                android:focusableInTouchMode="false"
                 android:text="기록하기"
                 android:textSize="18sp" />
 
@@ -103,10 +110,10 @@
                 android:layout_height="200dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edt_bg"
+                android:focusableInTouchMode="false"
                 android:gravity="top"
                 android:padding="10dp"
-                android:scrollbars="vertical"
-                android:focusableInTouchMode="false" />
+                android:scrollbars="vertical" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -126,9 +133,9 @@
                 android:layout_height="19dp"
                 android:layout_gravity="left"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="30dp"
                 android:textSize="17sp"
                 tools:text="작성일" />
+
             <TextView
                 android:id="@+id/result"
                 android:layout_width="wrap_content"
@@ -137,14 +144,14 @@
 
         <Button
             android:id="@+id/btnSave"
-            android:background="@drawable/button"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:textSize="17sp"
-            android:padding="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
-            android:text="저장" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button"
+            android:padding="10dp"
+            android:text="저장"
+            android:textSize="17sp" />
 
     </LinearLayout>
 </ScrollView>
