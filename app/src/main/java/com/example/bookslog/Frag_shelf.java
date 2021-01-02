@@ -61,6 +61,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         return fragView;
     }
 
+    //처음에 디비에서 쭉 불러와서 책 추가하기
     public void addBooks() {
 
         helper = new MyHelper(getContext());
@@ -174,10 +175,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
     //카드 삭제
     private void deleteBooks(Shelf_items book) {
         mShelf.remove(book);
-
-    }//카드 복원
-    private void undo(){
-
+        mShelfAdapter.notifyDataSetChanged();
     }
 
     //db 삭제
@@ -186,6 +184,11 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         String selection = BookShelf.BookEntry.COL_NAME_TITLE + " LIKE ?";
         String[] selectionArgs = {book.getBookTitle()};
         db.delete(BookShelf.BookEntry.TBL_NAME, selection, selectionArgs);
+    }
+    //삭제했던 책을 다시 추가하기..
+    private void addBook(Shelf_items book){
+        mShelf.add(book);
+        mShelfAdapter.notifyDataSetChanged();
     }
     private ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {//오른쪽으로 스와이프해서 삭제
 
@@ -197,17 +200,17 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         //오른쪽으로 스와이프하면 해당 아이템 삭제함
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final Shelf_items deletedBook = mShelf.get(viewHolder.getAdapterPosition());
-            int deletedBookPosition = viewHolder.getAdapterPosition();
+            final Shelf_items deletedBook = mShelf.get(viewHolder.getAdapterPosition());;
             deleteBooks(deletedBook);
-            mShelfAdapter.notifyDataSetChanged();
+
             Snackbar snackbar = Snackbar.make(getView(), "기록이 삭제되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
             snackbar.setAction(" 되돌리기", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    addBook(deletedBook);//지웠던 책 다시 추가함 오와 된다~~~~~~ 
                     Snackbar snackbar = Snackbar.make(getView(), "기록이 복원되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
                     snackbar.show();
+
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);

@@ -31,8 +31,7 @@
         <!-- 키보드 올라올떄 탭 안올라오게 inputmode 조정 -->
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
-
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
         </activity>
     </application>
 

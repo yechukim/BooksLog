@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:id="@+id/custom_toast_layout"
-    android:background="#364DB6AC"
+    android:background="#864AB5AA"
     android:layout_height="wrap_content"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/icon"
-        android:src="@drawable/bookwide"
+        android:src="@drawable/bookwidew"
         android:layout_width="50dp"
         android:layout_marginRight="8dp"
         android:layout_height="30dp"

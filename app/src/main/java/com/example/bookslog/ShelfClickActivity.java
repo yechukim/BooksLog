@@ -1,6 +1,7 @@
 package com.example.bookslog;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,11 +60,11 @@ public class ShelfClickActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelf_click);
 
-        LayoutInflater inflater = getLayoutInflater();
+       /* LayoutInflater inflater = getLayoutInflater();
         toastLayout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.custom_toast_layout));
         TextView toast_text = toastLayout.findViewById(R.id.toast_text);
         toast_text.setText("입력하려면 두 번 탭하세요.");
-
+*/
         ActionBar ab = getSupportActionBar();
         ab.setTitle("책꽂이로 돌아가기");
         ab.setDisplayHomeAsUpEnabled(true);
@@ -160,6 +162,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
                 db.update(BookShelf.BookEntry.TBL_NAME,values,selection, selectionArgs);
             }
         });
+
     }
 
     private void setNewBookProperties() {
@@ -167,6 +170,7 @@ public class ShelfClickActivity extends AppCompatActivity implements
         author.setHint("저자를 입력하세요.");
         write.setHint("기록하고 싶은 내용을 입력하세요.");
     }
+
     //리사이클러뷰 결과 바로 반영되게
     private void sendIntent(){
         Intent intent = new Intent(getApplicationContext(),Frag_shelf.class);
@@ -192,48 +196,6 @@ public class ShelfClickActivity extends AppCompatActivity implements
 
     @Override
     public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
-    }
-
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(toastLayout);
-        toast.show();
-        return true;
-    }
-
-    //2번 탭하여 수정하기
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        onInteraction();
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-        return false;
     }
 
     private boolean onInteraction() {
@@ -255,12 +217,54 @@ public class ShelfClickActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+//        Toast toast = new Toast(getApplicationContext());
+//        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+//        toast.setDuration(Toast.LENGTH_LONG);
+//        toast.setView(toastLayout);
+//        toast.show();
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        return false;
+    }
+
+    //2번 탭하여 수정하기
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        onInteraction();
+        return true;
+
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent e) {
+        return false;
+    }
+
+    @Override
     public void onBackPressed() {
         if (onInteraction()) {
             offInteraction();
         }
-        NavUtils.navigateUpFromSameTask(this);
-        super.onBackPressed();
+           NavUtils.navigateUpFromSameTask(this);
+            super.onBackPressed();
 
     }
 
