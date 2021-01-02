@@ -157,6 +157,7 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
         startActivityForResult(intent, 0);
     }
 
+    //기록 가져와서 추가
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == getActivity().RESULT_OK) {
@@ -203,12 +204,13 @@ public class Frag_shelf extends Fragment implements ShelfAdapter.OnShelfListener
             final Shelf_items deletedBook = mShelf.get(viewHolder.getAdapterPosition());;
             deleteBooks(deletedBook);
 
-            Snackbar snackbar = Snackbar.make(getView(), "기록이 삭제되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
+            Snackbar snackbar = Snackbar.make(getView(), "기록이 삭제되었습니다.", Snackbar.LENGTH_SHORT).setAnchorView(fab);
             snackbar.setAction(" 되돌리기", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addBook(deletedBook);//지웠던 책 다시 추가함 오와 된다~~~~~~ 
-                    Snackbar snackbar = Snackbar.make(getView(), "기록이 복원되었습니다.", Snackbar.LENGTH_LONG).setAnchorView(fab);
+                    addBook(deletedBook);//지웠던 책 다시 추가
+                    onResume();//db 다시 불러와서 삭제된 위치에 다시 추가될 수 있게 ~~
+                    Snackbar snackbar = Snackbar.make(getView(), "기록이 복원되었습니다.", Snackbar.LENGTH_SHORT).setAnchorView(fab);
                     snackbar.show();
 
                 }

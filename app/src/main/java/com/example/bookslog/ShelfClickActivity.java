@@ -218,11 +218,14 @@ public class ShelfClickActivity extends AppCompatActivity implements
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
+        //커스텀 토스트
 //        Toast toast = new Toast(getApplicationContext());
 //        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 //        toast.setDuration(Toast.LENGTH_LONG);
 //        toast.setView(toastLayout);
 //        toast.show();
+
+        Toast.makeText(getApplicationContext(), "입력하려면 두 번 탭하세요.", Toast.LENGTH_SHORT).setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         return false;
     }
 
