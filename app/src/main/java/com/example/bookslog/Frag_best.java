@@ -94,7 +94,7 @@ public class Frag_best extends Fragment {
     class NetworkThread extends Thread {
         String keyword;
         String client_id = "NI6zpCQXgTOaGarqdtAK";
-        String client_secret = "lu3MzDnCUs";
+        String client_secret = "비번 입력";
 
         public NetworkThread(String keyword) {//네트워크 이용할 때는 스레드를 이용한다.
             this.keyword = keyword;
