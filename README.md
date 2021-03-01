@@ -6,9 +6,9 @@
 ## Description
 
 * Four bottom tap
-* swipe with viewPager
-* edit logged book with double tap
-* swipe right to delete your logged item
-* select the date from Calendar to see when / what you read
-* search your book (limited 100)
-* button to go see best seller this week 
+* Swipe with viewPager
+* Edit logged book with double tap
+* Swipe right to delete your logged item
+* Select the date from Calendar to see when / what you read
+* Search your book (limited 100)
+* Button to go see best seller this week 
