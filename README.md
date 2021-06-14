@@ -1,7 +1,6 @@
 # My first Android App - Books Log 
 
 * First Project -  북스로그 
-* 걸린 기간: 약 1달
 
 ## Description
 
